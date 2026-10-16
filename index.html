@@ -466,6 +466,8 @@ const WORLD50={"type":"Topology","objects":{"countries":{"type":"GeometryCollect
 <script>
 // ============ boot gate: nothing renders until every part has loaded, then it renders once ============
 window.__BOOT=true;window.__bootT0=performance.now();
+// decide phone vs desktop before anything renders, so a phone never pays for the hidden desktop views
+window.__MOB0=(()=>{try{return matchMedia("(max-width: 820px), (max-height: 500px) and (pointer: coarse)").matches&&localStorage.getItem("travelor-desktop")!=="1";}catch(e){return false;}})();
 function gridOn(){const g=document.getElementById("rtGrid");return !!(g&&!g.closest("[hidden]"));}
 // the globe's two animation timers ran every frame forever, visible or not
 if(window.d3&&d3.timer){d3.timer=function(){return {stop(){},restart(){}};};}
@@ -6424,12 +6426,13 @@ if(typeof phFetch==="function"&&"IntersectionObserver" in window){
   const pop=document.body.classList.contains("popmode");
   let land="viewRoutes";
   if(pop){const cur=document.querySelector('.tab[aria-selected="true"]');if(cur)land=cur.dataset.view;}
+  if(window.__MOB0){["header.wrap","main.app"].forEach(sel=>{const e=document.querySelector(sel);if(e)e.hidden=true;});}
   setView(land);
   try{syncResTabs();}catch(e){}try{buildRT2();applyRT2();}catch(e){}
   try{tick();}catch(e){}
   requestAnimationFrame(()=>{try{fixMapSize();}catch(e){}try{loadPhotos();}catch(e){}
     console.log("boot ms:",Math.round(performance.now()-window.__bootT0));
-    const idle=window.requestIdleCallback||(f=>setTimeout(f,1200));idle(()=>{try{landRaster();}catch(e){}});});})();
+    const idle=window.requestIdleCallback||(f=>setTimeout(f,1200));idle(()=>{try{(window.landRasterAsync||landRaster)();}catch(e){}});});})();
 </script>
 <style>
 #mob{display:none}
@@ -7078,7 +7081,7 @@ function mRenderTrips(){const v=$m("mvTrips");if(!v||v.hidden)return;
   const pastC=[...new Set(past.flatMap(tpCountries))],away=past.reduce((a,t)=>a+tpNights(t),0);
   const card=tp=>{const cs=tpCities(tp),ed=tpEnd(tp);return `<div class="mtrip ${tp.kind}" data-tp="${tp.id}">
       <h3>${esc(tp.name)}</h3>
-      <div class="meta">${tp.kind==="past"?"taken":"planned"} · ${tp.start?fmtD(tp.start)+(ed?" → "+fmtD(ed):""):"no dates yet"}<br>${tpNights(tp)} nights · ${cs.length} stops · ${tpCountries(tp).length} countries · ${tpMiles(tp).toLocaleString()} mi</div>
+      <div class="meta">${tp.kind==="past"?"taken":"planned"} · ${tp.start?fmtD(tp.start)+(ed?" → "+fmtD(ed):""):"no dates yet"}<br>${tpNights(tp)} night${tpNights(tp)===1?"":"s"} · ${cs.length} stop${cs.length===1?"":"s"} · ${tpCountries(tp).length} countr${tpCountries(tp).length===1?"y":"ies"} · ${tpMiles(tp).toLocaleString()} mi</div>
       <div class="chain">${cs.map((c,i)=>(i?" <i>→</i> ":"")+esc(c.name)).join("")||"<span style='color:var(--muted)'>no stops yet</span>"}</div>
       ${tp.notes?`<div class="meta" style="white-space:pre-wrap">${esc(tp.notes)}</div>`:""}
       <div class="ops"><button data-o="edit">Build</button><button data-o="map"${cs.length<2?" disabled":""}>Map</button><button data-o="info">Details</button><button data-o="flip">${tp.kind==="past"?"Planned":"Taken"}</button></div></div>`;};
@@ -7474,7 +7477,7 @@ const _mrb43=mRenderBuild;mRenderBuild=function(){_mrb43.apply(this,arguments);
   let t=null;try{t=buildCustom();}catch(e){}const days=t&&t.days?t.days[1]:keys.reduce((a,k,i)=>a+nightsOf(k,i),0);
   const scores=tripMonthScores(keys),pm=planMonth(),best=scores.map((s,i)=>[s,i]).sort((a,b)=>b[0]-a[0]).slice(0,3).map(x=>MON3[x[1]]);
   const col=s=>s>=.75?"#8aa66b":s>=.55?"#c9a46a":s>=.4?"#d19a66":"#c9646a";
-  const when=`<div class="mwhen"><label>Trip starts<input type="date" id="mBDate" value="${MBD}"></label>${MBD?`<button class="clr" id="mBDclr">Clear</button>`:""}
+  const when=`<div class="mwhen"><label>Starts<input type="date" id="mBDate" value="${MBD}"></label>${MBD?`<button class="clr" id="mBDclr">Clear</button>`:""}
     <div class="sum">${MBD?`<b>${dFmt(dAdd(MBD,0))}</b> → <b>${dFmt(dAdd(MBD,Math.max(0,days-1)))}</b> · ${days} days on the ground${(()=>{const n=Math.round((dAdd(MBD,0)-new Date())/864e5);return n>0?` · <span style="color:var(--accent)">in ${n} days</span>`:"";})()}`
       :`No dates yet — weather below is for <b>${MON3[pm-1]}</b>. Best months for this exact route: <b>${best.join(", ")}</b>.`}</div>
     <div style="flex:1 1 100%"><div class="mmo" id="mMo">${scores.map((s,i)=>`<button data-m="${i+1}" class="${i+1===pm?"sel":""}" aria-label="${MON3[i]} ${Math.round(s*100)}%"><i style="height:${Math.round(8+s*36)}px;background:${col(s)}"></i>${MON3[i][0]}</button>`).join("")}</div></div></div>`;
@@ -7549,6 +7552,191 @@ window.addEventListener("online",mOffline);window.addEventListener("offline",mOf
 // re-render the open tab so every wrapper above shows up straight away
 if(MOB){try{mLayerChips();if(MMAP)mDrawMap();mTab(MTAB,true);}catch(e){console.warn(e);}}
 console.log("mobile round three ready");
+</script>
+<style>
+#mob,#mob *{-webkit-tap-highlight-color:transparent}
+#mob .mbtn,#mob .mchip,#mob .mzcard,#mob .mwc,#mob .mtrip .ops button,#mob .mrow,#mob .madd,#mob .mfab,#mob .mwish,#mob .mshr,#mob #mTabs button{transition:transform .12s ease,background-color .15s ease}
+#mob .mbtn:active,#mob .mchip:active,#mob .mwc:active,#mob .mtrip .ops button:active,#mob .mrow:active,#mob .mfab:active,#mob .mwish:active,#mob .mshr:active,#mob #mTabs button:active{transform:scale(.95)}
+#mob .mzcard:active{transform:scale(.985)}
+#mob .madd:active{transform:scale(.9)}
+#mvIdeas:not([hidden]),#mvBuild:not([hidden]),#mvTrips:not([hidden]){animation:mIn .2s ease-out}
+@keyframes mIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+#mob .mpage.on,#mob .mmodal.on{animation:mIn .18s ease-out}
+@media (prefers-reduced-motion:reduce){#mob *,#mob *::before,#mob *::after{animation:none!important;transition:none!important}}
+.lbnum.multi{width:auto!important;min-width:26px;padding:0 6px;border-radius:13px!important;white-space:nowrap}
+#mob .mpc img{display:block;width:100%;height:auto;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+#mob .mpc .wait{aspect-ratio:4/5;display:grid;place-items:center;border-radius:14px;background:var(--bg2);color:var(--muted);font:12px var(--mono)}
+#mob .mdym{margin:10px 0 0;color:var(--muted);font-size:13.5px}
+</style>
+<script>
+// ============ phone app, round four: faster boot, polish, smarter search, postcards, calendar ============
+
+// ---------- the land raster off the main thread (falls back to the old synchronous build) ----------
+var LR_PEND=false;
+function landRasterAsync(){if(LANDR!==null||LR_PEND)return;
+  if(typeof Worker==="undefined"||typeof OffscreenCanvas==="undefined"){try{landRaster();}catch(e){}return;}
+  let w;try{
+    // flatten every ring of the 1:50m land into one array: [n, x0,y0, x1,y1 …] per ring, already in raster pixels
+    const W=2400,H=1200,out=[];
+    // unwrap rings that cross the date line, close polar rings over the pole, and draw each ring at -360/0/+360 so nothing is cut
+    const ring=r=>{const pts=[];let prev=null,off=0;for(const c of r){let lon=c[0];if(prev!==null){const d=lon+off-prev;if(d>180)off-=360;else if(d<-180)off+=360;}lon+=off;pts.push([lon,c[1]]);prev=lon;}
+      const lons=pts.map(q=>q[0]),span=Math.max(...lons)-Math.min(...lons);
+      if(span>=359){const lat=pts.reduce((a,q)=>a+q[1],0)/pts.length<0?-90:90;const f=pts[0],l=pts[pts.length-1];pts.push([l[0],lat],[f[0],lat]);}
+      [-360,0,360].forEach(sh=>{out.push(pts.length);for(const q of pts)out.push((q[0]+sh+180)/360*W,(90-q[1])/180*H);});};
+    (land50.features||[land50]).forEach(f=>{const g=f.geometry||f;if(!g)return;if(g.type==="Polygon")g.coordinates.forEach(ring);else if(g.type==="MultiPolygon")g.coordinates.forEach(p=>p.forEach(ring));});
+    const buf=new Float32Array(out);
+    const src=`onmessage=e=>{const {W,H,b}=e.data;try{const cv=new OffscreenCanvas(W,H),ctx=cv.getContext("2d",{willReadFrequently:true});ctx.fillStyle="#000";ctx.beginPath();
+      let i=0;while(i<b.length){const n=b[i++];for(let k=0;k<n;k++){const x=b[i++],y=b[i++];if(k)ctx.lineTo(x,y);else ctx.moveTo(x,y);}ctx.closePath();}
+      ctx.fill("evenodd");const px=ctx.getImageData(0,0,W,H).data;const a=new Uint8Array(W*H);for(let i=0,j=3;i<a.length;i++,j+=4)a[i]=px[j]>127?1:0;
+      const lab=new Int32Array(W*H),q=new Int32Array(W*H);let nid=0;
+      for(let i=0;i<a.length;i++){if(!a[i]||lab[i])continue;nid++;let h=0,t=0;q[t++]=i;lab[i]=nid;
+        while(h<t){const c=q[h++];const x=c%W,y=(c-x)/W;let n;
+          if(y>0){n=c-W;if(a[n]&&!lab[n]){lab[n]=nid;q[t++]=n;}}
+          if(y<H-1){n=c+W;if(a[n]&&!lab[n]){lab[n]=nid;q[t++]=n;}}
+          n=x>0?c-1:c+W-1;if(a[n]&&!lab[n]){lab[n]=nid;q[t++]=n;}
+          n=x<W-1?c+1:c-W+1;if(a[n]&&!lab[n]){lab[n]=nid;q[t++]=n;}}}
+      postMessage({ok:1,a,lab,n:nid},[a.buffer,lab.buffer]);}catch(err){postMessage({ok:0,err:String(err)});}};`;
+    const url=URL.createObjectURL(new Blob([src],{type:"text/javascript"}));w=new Worker(url);URL.revokeObjectURL(url);LR_PEND=true;
+    w.onmessage=e=>{LR_PEND=false;w.terminate();const d=e.data;if(LANDR!==null)return;
+      if(d&&d.ok)LANDR={W:2400,H:1200,a:d.a,lab:d.lab,n:d.n};else{try{landRaster();}catch(x){}}};
+    w.onerror=()=>{LR_PEND=false;try{w.terminate();}catch(x){}if(LANDR===null)try{landRaster();}catch(x){}};
+    w.postMessage({W,H,b:buf},[buf.buffer]);
+  }catch(e){LR_PEND=false;try{landRaster();}catch(x){}}}
+
+// ---------- the explore map opens on home: O'Hare and Europe in one view ----------
+function mHomeView(anim){if(!MMAP)return;const b=L.latLngBounds([[24,-98],[58,32]]);
+  const o={paddingTopLeft:[8,110],paddingBottomRight:[8,Math.min(mVisibleSheet(),window.innerHeight*.45)]};
+  if(anim)MMAP.flyToBounds(b,Object.assign({duration:.6},o));else MMAP.fitBounds(b,o);}
+(function(){const f=$m("mFit");if(f){f.title="Home: O'Hare and Europe";f.onclick=()=>{if(!MMAP)return;MSEL=null;mDrawMap();mHomeView(true);mSheetHome();mSnap("peek");};}})();
+
+// ---------- one marker per place: Athens visited twice reads "1·4", not two stacked pins ----------
+function mergeStopMarkers(group,size){if(!group)return;const ms=[];group.eachLayer(l=>{if(l instanceof L.Marker&&l.options.icon&&/lbnum/.test(l.options.icon.options.html||""))ms.push(l);});
+  const by={};ms.forEach(m=>{const ll=m.getLatLng(),k=ll.lat.toFixed(2)+","+ll.lng.toFixed(2);(by[k]=by[k]||[]).push(m);});
+  Object.values(by).forEach(g=>{if(g.length<2)return;const nums=g.map(m=>(m.options.icon.options.html.match(/>(\d+)</)||[])[1]).filter(Boolean);
+    g.slice(1).forEach(m=>group.removeLayer(m));
+    const h=size||22;g[0].setIcon(L.divIcon({className:"",html:`<div class="lbnum multi" style="height:${h}px;line-height:${h-4}px">${nums.join("·")}</div>`,iconSize:null,iconAnchor:[Math.round((nums.join("·").length*7+12)/2),h/2]}));});}
+if(typeof mBuildMap==="function"){const _mbm44=mBuildMap;mBuildMap=function(){_mbm44.apply(this,arguments);try{mergeStopMarkers(MBLAYER,22);}catch(e){}};}
+const _mdm44=mDrawMap;mDrawMap=function(){_mdm44.apply(this,arguments);try{if(MSEL)mergeStopMarkers(MRT,26);}catch(e){}};
+
+// ---------- search: recents, the wonders, and "did you mean" ----------
+var MREC=[];try{MREC=JSON.parse(localStorage.getItem("travelor-recent")||"[]");}catch(e){MREC=[];}
+$m("mob").addEventListener("click",e=>{const r=e.target.closest("#mSres .mrow");if(!r)return;
+  const k=r.dataset.d?"d:"+r.dataset.d:r.dataset.r?"r:"+r.dataset.r:r.dataset.s?"s:"+r.dataset.s:null;if(!k)return;
+  MREC=[k].concat(MREC.filter(x=>x!==k)).slice(0,6);try{localStorage.setItem("travelor-recent",JSON.stringify(MREC));}catch(x){}},true);
+function recRow(k){const t=k[0],id=k.slice(2);
+  if(t==="d"){const d=byId[id];return d?mResRow("d",id,"↺",d.name,d.country+" · fit #"+destRank(id)):"";}
+  if(t==="r"){const r=byIdAll(id);return r?mResRow("r",id,"↺",r.name,r.stops.length+" stops · "+r.days[1]+" days"):"";}
+  const s=SITEBY[id];return s?mResRow("s",id,"↺",s.name,s.where+" · "+s.country):"";}
+function lev(a,b){if(Math.abs(a.length-b.length)>3)return 9;const m=[...Array(b.length+1).keys()];
+  for(let i=1;i<=a.length;i++){let p=m[0];m[0]=i;for(let j=1;j<=b.length;j++){const t=m[j];m[j]=Math.min(m[j]+1,m[j-1]+1,p+(a[i-1]===b[j-1]?0:1));p=t;}}return m[b.length];}
+const _msr44=mSearchResults;mSearchResults=function(v){const h=_msr44.apply(this,arguments);
+  if(!v){const rec=MREC.map(recRow).filter(Boolean);
+    const w=SITES.filter(isWonder).map(s=>mResRow("s",s.id,"✦",s.name,s.where+" · "+wonderLabel(s))).join("");
+    return (rec.length?`<div class="msec">recent</div><div class="mres">${rec.join("")}</div>`:"")+h+`<div class="msec">the 14 wonders</div><div class="mres">${w}</div>`;}
+  if(!/class="mempty"/.test(h))return h;
+  const pool=D.map(d=>["d",d.id,d.name,d.country]).concat(SITES.map(s=>["s",s.id,s.name,s.where]));
+  const sc=pool.map(p=>{const n=noAcc(p[2]);const first=n.split(/[\s,(&-]+/)[0];return [Math.min(lev(v,n.slice(0,v.length+1)),lev(v,first)),p];}).filter(x=>x[0]<=2).sort((a,b)=>a[0]-b[0]).slice(0,4);
+  if(!sc.length)return h;
+  return h.replace("</div>"," — did you mean one of these?</div>")+`<div class="mres">${sc.map(([_,p])=>p[0]==="d"?mResRow("d",p[1],"●",p[2],p[3]):mResRow("s",p[1],isWonder(SITEBY[p[1]])?"✦":"◆",p[2],p[3])).join("")}</div>`;};
+
+// ---------- postcards: the trip as a picture to share ----------
+function pcOffsets(N){const off=[];let d=0;N.forEach((n,i)=>{off.push(d);d+=n;if(i<N.length-1&&n>0)d+=1;});return {off,days:Math.max(1,d)};}
+async function tripPostcard(p){const W=1080,H=1350,cv=document.createElement("canvas");cv.width=W;cv.height=H;const g=cv.getContext("2d");
+  try{await Promise.all([document.fonts.load('500 72px "Fraunces"'),document.fonts.load('500 28px "IBM Plex Mono"'),document.fonts.load('600 30px "IBM Plex Sans"')]);}catch(e){}
+  const SERIF='"Fraunces", Georgia, serif',MONO='"IBM Plex Mono", ui-monospace, monospace',SANS='"IBM Plex Sans", system-ui, sans-serif';
+  const cs=p.s.map(k=>CITIES[k]);
+  // backdrop
+  const bg=g.createLinearGradient(0,0,0,H);bg.addColorStop(0,"#231e18");bg.addColorStop(1,"#14110d");g.fillStyle=bg;g.fillRect(0,0,W,H);
+  // map panel
+  const MX=60,MY=250,MW=W-120,MH=760;g.save();g.beginPath();g.roundRect?g.roundRect(MX,MY,MW,MH,28):g.rect(MX,MY,MW,MH);g.clip();
+  g.fillStyle="#1b2320";g.fillRect(MX,MY,MW,MH);
+  const pts={type:"MultiPoint",coordinates:cs.map(c=>[c.ll[1],c.ll[0]])};
+  const pr=d3.geoMercator();pr.fitExtent([[MX+90,MY+90],[MX+MW-90,MY+MH-90]],pts);
+  {const sc=pr.scale();if(!isFinite(sc)||sc>4000){const c=d3.geoCentroid(pts);pr.scale(isFinite(sc)?4000:2500).center(c).translate([MX+MW/2,MY+MH/2]);}}
+  const path=d3.geoPath(pr,g);
+  g.beginPath();path(land50);g.fillStyle="#3a3a2c";g.fill();g.lineWidth=1.2;g.strokeStyle="#6a5c46";g.stroke();
+  g.beginPath();path(borders50);g.lineWidth=.8;g.strokeStyle="rgba(216,204,184,.22)";g.stroke();
+  // legs
+  for(let i=1;i<cs.length;i++){const a=cs[i-1].ll,b=cs[i].ll;const line={type:"LineString",coordinates:[[a[1],a[0]],[b[1],b[0]]]};
+    g.beginPath();path(line);g.lineCap="round";g.lineWidth=13;g.strokeStyle="rgba(12,10,8,.55)";g.stroke();
+    g.beginPath();path(line);g.lineWidth=7;g.strokeStyle=(p.c&&p.c[i-1])||STOPPAL[(i-1)%STOPPAL.length];g.stroke();}
+  // stops, one marker per place
+  const seen={};cs.forEach((c,i)=>{const k=c.key;(seen[k]=seen[k]||{c,n:[]}).n.push(i+1);});
+  const items=Object.values(seen).map(o=>{const xy=pr([o.c.ll[1],o.c.ll[0]]);return {o,x:xy[0],y:xy[1]};});
+  items.forEach((it,j)=>{const lab=it.o.n.join("·"),w=Math.max(44,g.measureText?lab.length*17+24:44);
+    g.font=`700 24px ${MONO}`;const tw=g.measureText(lab).width+26,bw=Math.max(44,tw);
+    g.fillStyle="#0c0a08";g.beginPath();g.roundRect?g.roundRect(it.x-bw/2,it.y-22,bw,44,22):g.rect(it.x-bw/2,it.y-22,bw,44);g.fill();
+    g.lineWidth=3;g.strokeStyle="#cf7a3d";g.stroke();g.fillStyle="#efe6d8";g.textAlign="center";g.textBaseline="middle";g.fillText(lab,it.x,it.y+1);
+    // name label, pushed to whichever side has room
+    const near=items.some((o2,k)=>k!==j&&Math.abs(o2.y-it.y)<46&&o2.x>it.x&&o2.x-it.x<260);const right=!near&&it.x<MX+MW-250||it.x<MX+250;
+    g.font=`600 30px ${SANS}`;g.textAlign=right?"left":"right";const tx=it.x+(right?bw/2+12:-bw/2-12);
+    g.lineWidth=7;g.strokeStyle="rgba(12,10,8,.85)";g.strokeText(it.o.c.name,tx,it.y);g.fillStyle="#fbf8f1";g.fillText(it.o.c.name,tx,it.y);});
+  g.restore();
+  g.lineWidth=2;g.strokeStyle="rgba(216,204,184,.18)";g.beginPath();g.roundRect?g.roundRect(MX,MY,MW,MH,28):g.rect(MX,MY,MW,MH);g.stroke();
+  // header
+  g.textAlign="left";g.textBaseline="alphabetic";g.fillStyle="#cf7a3d";g.font=`600 26px ${MONO}`;
+  const {days}=pcOffsets(p.N);const end=p.d?dAdd(p.d,days-1):null;
+  g.fillText((p.d?`${dFmt(dAdd(p.d,0))} → ${dFmt(end)}`.toUpperCase():"A TRIP FROM CHICAGO O'HARE"),MX,112);
+  g.fillStyle="#fbf8f1";g.font=`500 76px ${SERIF}`;let title=p.n;while(g.measureText(title).width>W-120&&title.length>4)title=title.slice(0,-2);if(title!==p.n)title=title.replace(/\s*\S?$/,"")+"…";
+  g.fillText(title,MX,196);
+  // stats
+  let km=0;for(let i=1;i<cs.length;i++)km+=haversine(cs[i-1].ll,cs[i].ll);km+=haversine(HUB.ll,cs[0].ll)+haversine(cs[cs.length-1].ll,HUB.ll);
+  const countries=[...new Set(p.s.map(k=>cityCountry(k)).filter(Boolean))].length;
+  const wonders=SITES.filter(isWonder).filter(s=>cs.some(c=>haversine(c.ll,s.ll)<=60)).length;
+  const st=[[days,"days"],[p.N.reduce((a,b)=>a+b,0),"nights"],[Object.keys(seen).length,"places"],[countries,countries===1?"country":"countries"],[Math.round(km*0.621371).toLocaleString(),"miles"]];
+  if(wonders)st.splice(4,0,[wonders,wonders===1?"wonder":"wonders"]);
+  const cw=(W-120)/st.length;st.forEach((s,i)=>{const x=MX+i*cw;g.fillStyle="#fbf8f1";g.font=`500 52px ${SERIF}`;g.fillText(String(s[0]),x,1100);
+    g.fillStyle="#b3a48f";g.font=`600 20px ${MONO}`;g.fillText(s[1].toUpperCase(),x,1134);});
+  // route line
+  g.fillStyle="#d8ccb8";g.font=`400 26px ${SANS}`;let line=cs.map((c,i)=>c.name+(p.N[i]===0?" (day stop)":"")).join("  →  ");
+  const words=line.split("  →  ");let y=1196,cur="";words.forEach((w2,i)=>{const t=(cur?cur+"  →  ":"")+w2;if(g.measureText(t).width>W-120&&cur){g.fillText(cur+"  →",MX,y);y+=36;cur=w2;}else cur=t;});if(cur&&y<1290)g.fillText(cur,MX,y);
+  // footer mark
+  g.fillStyle="#7d6f5e";g.font=`600 20px ${MONO}`;g.textAlign="right";g.fillText("TRAVELOR · 3GO-47.GITHUB.IO/TRAVELOR",W-MX,H-36);
+  return await new Promise(r=>cv.toBlob(r,"image/png"));}
+function mPostcard(p){if(!p)return;const m=$m("mModal");const slug=(p.n||"trip").replace(/[^\w]+/g,"-").replace(/^-|-$/g,"").toLowerCase()||"trip";
+  m.innerHTML=`<div class="mmhd"><button class="mx" data-x aria-label="Close">×</button><h2>Postcard</h2></div>
+    <div class="mmbody mpc"><div class="wait" id="mPcImg">drawing your trip…</div><p class="mdym">A picture of the route with dates and the numbers — for a group chat, a story, or the fridge.</p></div>
+    <div class="mmfoot"><button class="mbtn" data-sv disabled>Save image</button><button class="mbtn pri" data-sh disabled>Share</button></div>`;
+  m.classList.add("on");mPush("modal");m.querySelector("[data-x]").onclick=()=>mPop();
+  tripPostcard(p).then(blob=>{if(!blob)return;const url=URL.createObjectURL(blob);const box=$m("mPcImg");if(!box)return;
+    box.outerHTML=`<img src="${url}" alt="Postcard of ${esc(p.n)}">`;
+    const file=new File([blob],`travelor-${slug}.png`,{type:"image/png"});
+    const sv=m.querySelector("[data-sv]"),sh=m.querySelector("[data-sh]");sv.disabled=false;sh.disabled=false;
+    sv.onclick=()=>{const a=document.createElement("a");a.href=url;a.download=file.name;document.body.appendChild(a);a.click();a.remove();mToast("Saved the postcard");};
+    sh.onclick=()=>{if(navigator.canShare&&navigator.canShare({files:[file]}))navigator.share({files:[file],title:p.n}).catch(()=>{});else sv.onclick();};
+  }).catch(e=>{const box=$m("mPcImg");if(box)box.textContent="Couldn't draw this one — "+e.message;});}
+
+// ---------- add a dated trip to your calendar (.ics) ----------
+function icsFor(p){const z=n=>String(n).padStart(2,"0"),dt=d=>`${d.getFullYear()}${z(d.getMonth()+1)}${z(d.getDate())}`;
+  const {off,days}=pcOffsets(p.N),stamp=new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d+Z$/,"Z"),uid=Date.now().toString(36);
+  const ev=(s,e,sum,desc,i)=>["BEGIN:VEVENT",`UID:${uid}-${i}@travelor`,`DTSTAMP:${stamp}`,`DTSTART;VALUE=DATE:${dt(s)}`,`DTEND;VALUE=DATE:${dt(e)}`,`SUMMARY:${sum.replace(/[,;]/g,"\\$&")}`,desc?`DESCRIPTION:${desc.replace(/[,;]/g,"\\$&")}`:null,"TRANSP:TRANSPARENT","END:VEVENT"].filter(Boolean).join("\r\n");
+  const cs=p.s.map(k=>CITIES[k]);const out=[ev(dAdd(p.d,0),dAdd(p.d,days),"✈ "+p.n,cs.map(c=>c.name).join(" → ")+" · planned with Travelor",0)];
+  cs.forEach((c,i)=>{if(p.N[i]>0)out.push(ev(dAdd(p.d,off[i]),dAdd(p.d,off[i]+p.N[i]),`${c.name} · ${p.N[i]} night${p.N[i]>1?"s":""}`,"",i+1));
+    else out.push(ev(dAdd(p.d,Math.max(0,off[i])),dAdd(p.d,Math.max(0,off[i])+1),`${c.name} · day stop`,"Seen on the way — no night here",i+1));});
+  return ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Travelor//EN","CALSCALE:GREGORIAN"].concat(out,["END:VCALENDAR"]).join("\r\n");}
+function mCalendar(p){if(!p)return;if(!p.d){mToast("Set a start date first");return;}
+  const f=new File([icsFor(p)],(p.n||"trip").replace(/[^\w]+/g,"-").toLowerCase()+".ics",{type:"text/calendar"});
+  if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:p.n}).catch(()=>{});return;}
+  const url=URL.createObjectURL(f);const a=document.createElement("a");a.href=url;a.download=f.name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);
+  mToast("Calendar file saved — open it to add every stop");}
+
+// buttons: Build actions, and the trip details sheet
+const _mrb44=mRenderBuild;mRenderBuild=function(){_mrb44.apply(this,arguments);const v=$m("mvBuild");if(!v||v.hidden)return;const acts=v.querySelector(".macts");if(!acts)return;
+  const mk=(a,t,fn)=>{const b=document.createElement("button");b.className="mbtn";b.dataset.a=a;b.textContent=t;b.onclick=fn;return b;};
+  const pk=()=>{const q=packFromBuild();if(q&&MBD)q.d=MBD;return q;};
+  const sh=acts.querySelector('[data-a="share"]');const pc=mk("postcard","🖼 Postcard",()=>mPostcard(pk()));
+  if(sh)sh.after(pc);else acts.appendChild(pc);
+  if(MBD)pc.after(mk("cal","📅 Add to calendar",()=>mCalendar(pk())));};
+const _met44=mEditTrip;mEditTrip=function(id,isNew){_met44.apply(this,arguments);const tp=TRIPS.find(t=>t.id===id);const body=document.querySelector("#mModal .mmbody");if(!tp||!body)return;
+  const row=document.createElement("div");row.className="macts";row.style.marginTop="18px";
+  row.innerHTML=`<button class="mbtn" data-pcd>🖼 Postcard</button><button class="mbtn" data-shr>↗ Share link</button>${tp.start?`<button class="mbtn" data-cal>📅 Add to calendar</button>`:""}`;
+  const del=$m("mtDel");if(del)del.before(row);else body.appendChild(row);
+  row.querySelector("[data-pcd]").onclick=()=>{mPop();setTimeout(()=>mPostcard(packFromTrip(tp)),280);};
+  row.querySelector("[data-shr]").onclick=()=>mShare(packFromTrip(tp));
+  const c=row.querySelector("[data-cal]");if(c)c.onclick=()=>mCalendar(packFromTrip(tp));};
+
+if(MOB){try{mHomeView(false);mTab(MTAB,true);}catch(e){}}
+console.log("mobile round four ready");
 </script>
 
 </body></html>

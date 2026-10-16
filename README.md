@@ -35,3 +35,6 @@ On the phone you can also:
 - **Trip dates in Build.** Set a start date to get real dates for each day, the weather at each stop, and a 12-month strip of the best months for that exact route.
 - **Rough budget.** Choose Shoestring, Comfort or Splurge and the number of people, and see estimates for flights from O'Hare, getting around, places to stay, and food and sights.
 - **Works offline.** Once you've opened Travelor from the website, it still opens with no signal, along with your trips and any maps you've already viewed.
+- **Postcards.** 🖼 Postcard draws the trip as a 1080×1350 image — route map, dates and totals — ready to share or save.
+- **Add to calendar.** A dated trip exports as a calendar file, with one event for the whole trip and one for each stop.
+- **Faster on phones.** Startup takes about a third less time. The heaviest map job runs in the background.
