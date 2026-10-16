@@ -24,3 +24,10 @@ Flight times, CO₂ and jet-lag figures are model estimates; check airlines and 
 ## Phone layout
 
 On a phone (or any narrow screen) Travelor switches to its own touch-first app: a full-screen map with a draggable bottom sheet (Explore), an infinite-scroll Ideas feed with filters, a Build tab with steppers, day stops, leg colours and the optimiser, and My Trips. A "desktop layout" switch lives under My Trips → Settings.
+
+On the phone you can also:
+- **Share a trip as a link.** The whole trip is in the URL, so the person who opens it can save it or load it into Build.
+- **Reorder stops by dragging them.**
+- **Track your travel in My Trips.** It shows a countdown to your next trip, a map of the countries you've been to, and how many of the 14 wonders you've seen.
+- **Tap 🎲 Surprise me** for a random pick that fits this month.
+- **Add Travelor to your home screen.** It then opens like an app.

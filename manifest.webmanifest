@@ -1,0 +1,2 @@
+{"name":"Travelor","short_name":"Travelor","description":"World travel planner from Chicago O'Hare — routes, landmarks, the 7 wonders and a trip builder.","start_url":"./","scope":"./","display":"standalone","orientation":"portrait","background_color":"#1b1713","theme_color":"#1b1713",
+"icons":[{"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},{"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"},{"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}]}
