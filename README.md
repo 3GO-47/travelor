@@ -31,3 +31,7 @@ On the phone you can also:
 - **Track your travel in My Trips.** It shows a countdown to your next trip, a map of the countries you've been to, and how many of the 14 wonders you've seen.
 - **Tap 🎲 Surprise me** for a random pick that fits this month.
 - **Add Travelor to your home screen.** It then opens like an app.
+- **Wishlist.** Tap ♥ on any place, landmark or route. Saved items show on the map and in My Trips, and "Plan a trip from your wishlist" turns a group of them into a trip.
+- **Trip dates in Build.** Set a start date to get real dates for each day, the weather at each stop, and a 12-month strip of the best months for that exact route.
+- **Rough budget.** Choose Shoestring, Comfort or Splurge and the number of people, and see estimates for flights from O'Hare, getting around, places to stay, and food and sights.
+- **Works offline.** Once you've opened Travelor from the website, it still opens with no signal, along with your trips and any maps you've already viewed.

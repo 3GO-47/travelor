@@ -7340,5 +7340,215 @@ mApply();
 window.addEventListener("hashchange",()=>{const h=location.hash||"";if(h.startsWith("#trip="))openIncoming(unpack(h.slice(6)));});
 console.log("mobile round two ready");
 </script>
+<style>
+#mob .mwish{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--bg2);color:var(--fg);display:inline-flex;align-items:center;justify-content:center;flex:none;padding:0}
+#mob .mwish svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8}
+#mob .mwish.on{color:#c44536;border-color:#c44536}
+#mob .mwish.on svg{fill:#c44536}
+#mob .mzcard .mwish.card{position:absolute;right:10px;top:10px;z-index:3;background:rgba(251,248,241,.9);border:0;color:#1b1713;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+#mob .mzcard .mwish.card.on{color:#c44536}
+#mob .mpbar .mwish{margin-left:auto}
+#mob .mshd .mwish{margin-right:6px}
+.mwmk{width:26px;height:26px;border-radius:50%;background:#c44536;color:#fbf8f1;border:2px solid #fbf8f1;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.45)}
+.mwmk svg{width:14px;height:14px;fill:#fbf8f1}
+#mob .mwrow{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 8px;margin:0 -2px}
+#mob .mwrow>*{flex:none}
+#mob .mwc{position:relative;width:148px;scroll-snap-align:start;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel);text-align:left;padding:0}
+#mob .mwc .mph{height:92px;border-radius:0}
+#mob .mwc .mph .phx{font-size:10px}
+#mob .mwc b{display:block;padding:7px 9px 0;font-size:13.5px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#mob .mwc small{display:block;padding:2px 9px 8px;font:10px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+#mob .mwc .rm{position:absolute;top:6px;right:6px;width:32px;height:32px;border-radius:50%;border:0;background:rgba(27,23,19,.7);color:#efe6d8;font-size:15px}
+#mob .mwhen{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin:10px 0 4px}
+#mob .mwhen label{display:flex;align-items:center;gap:8px;font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+#mob .mwhen input{font:500 15px system-ui;padding:8px 10px;min-height:40px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);color:var(--fg)}
+#mob .mwhen .sum{flex:1 1 100%;font-size:13.5px;line-height:1.4}
+#mob .mwhen .clr{min-height:40px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--muted)}
+#mob .mmo{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;margin:8px 0 2px}
+#mob .mmo button{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;height:62px;padding:0 0 4px;border:0;border-radius:8px;background:transparent;color:var(--muted);font:600 9.5px var(--mono)}
+#mob .mmo button i{display:block;width:100%;border-radius:5px 5px 2px 2px;background:var(--line)}
+#mob .mmo button.sel{color:var(--fg);outline:2px solid var(--accent);outline-offset:-1px}
+#mob .mbleg .lcsw{width:36px;height:36px;border-radius:10px}
+#mob .mwx{margin:6px 0 0 44px;font-size:12.5px;color:var(--muted);line-height:1.4}
+#mob .mwx .t{font:600 12.5px var(--mono);color:var(--fg)}
+#mob .mwx .ok{color:#5c7444;font-weight:700}
+#mob .mwx .off{color:#c44536;font-weight:700}
+#mob .mday .mdate{display:block;font:600 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:1px;font-style:normal}
+#mob .mbud{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px 12px 10px}
+#mob .mbud .ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+#mob .mbud .seg{display:flex;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+#mob .mbud .seg button{min-height:40px;padding:0 11px;border:0;background:transparent;font-size:13px;font-weight:600;color:var(--muted)}
+#mob .mbud .seg button[aria-pressed="true"]{background:var(--accent);color:#1b1713}
+#mob .mbud .trav{display:flex;align-items:center;gap:6px;font-size:13px}
+#mob .mbud .trav button{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);font-size:18px}
+#mob .mbud .trav b{min-width:58px;text-align:center}
+#mob .mbud .tot{font:500 34px/1.05 var(--display);margin:12px 0 2px}
+#mob .mbud .pp{font:11.5px var(--mono);color:var(--muted)}
+#mob .mbud .mbbar{display:flex;width:100%;height:14px;border-radius:7px;overflow:hidden;margin:10px 0 8px;gap:2px}
+#mob .mbud .mbbar i{display:block;height:100%}
+#mob .mbud .rows{display:grid;grid-template-columns:auto 1fr auto;gap:5px 8px;font-size:13px;align-items:center}
+#mob .mbud .rows i{width:10px;height:10px;border-radius:3px}
+#mob .mbud .rows span{color:var(--muted);font-size:12px}
+#mob .mbud .rows b{font:600 13px var(--mono);text-align:right}
+#mob .mbud .fine{font-size:11.5px;color:var(--muted);margin:8px 0 0;line-height:1.4}
+#mOff{position:fixed;left:50%;transform:translateX(-50%);top:calc(64px + env(safe-area-inset-top,0px));z-index:3500;background:#2d261f;color:#efe6d8;border:1px solid #6a5c46;border-radius:999px;padding:7px 14px;font:600 12px system-ui;box-shadow:0 6px 18px rgba(0,0,0,.35);pointer-events:none}
+</style>
+<script>
+// ============ phone app, round three: wishlist, trip dates + weather, rough budget, offline ============
+const HEART=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.4s-7.3-4.5-9.4-9C1.2 8.2 3.3 4.6 7 4.6c2.2 0 3.9 1.2 5 3 1.1-1.8 2.8-3 5-3 3.7 0 5.8 3.6 4.4 6.8-2.1 4.5-9.4 9-9.4 9z"/></svg>`;
+const MON3=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+// ---------- wishlist ----------
+var WISH=[];try{WISH=JSON.parse(localStorage.getItem("travelor-wish")||"[]");if(!Array.isArray(WISH))WISH=[];}catch(e){WISH=[];}
+function wSave(){try{localStorage.setItem("travelor-wish",JSON.stringify(WISH));}catch(e){}}
+function wHas(k){return WISH.includes(k);}
+function wObj(k){const id=k.slice(2);return k[0]==="s"?SITEBY[id]:byIdAll(id);}
+function wKeyOf(t){if(!t)return null;if(SITEBY[t.id]===t)return "s:"+t.id;return (t.kind==="dest"?"d:":"r:")+t.id;}
+function wBtn(k,name,cls){return k?`<button class="mwish${wHas(k)?" on":""}${cls?" "+cls:""}" data-wish="${k}" data-wn="${esc(name||"")}" aria-label="${wHas(k)?"Remove from":"Save to"} wishlist" aria-pressed="${wHas(k)}">${HEART}</button>`:"";}
+function wToggle(k,name){const i=WISH.indexOf(k);if(i>=0)WISH.splice(i,1);else WISH.unshift(k);wSave();
+  document.querySelectorAll(`[data-wish="${k}"]`).forEach(b=>{b.classList.toggle("on",i<0);b.setAttribute("aria-pressed",i<0);});
+  mToast(i>=0?`Removed <b>${esc(name)}</b> from your wishlist`:`Saved <b>${esc(name)}</b> to your wishlist`,i>=0?null:"Wishlist",()=>{mTab("trips");setTimeout(()=>{const w=$m("mWish");if(w)w.scrollIntoView({block:"start",behavior:"smooth"});},90);});
+  if(MXL.wish&&MMAP)mDrawMap();if(MTAB==="trips")mRenderTrips();}
+// one delegated listener, in the capture phase, so a heart never also opens the card under it
+$m("mob").addEventListener("click",e=>{const b=e.target.closest("[data-wish]");if(!b)return;e.preventDefault();e.stopPropagation();wToggle(b.dataset.wish,b.dataset.wn);},true);
+const _mc43=mCard;mCard=function(t,i){const h=_mc43.apply(this,arguments);const k=MSEG==="site"?"s:"+t.id:wKeyOf(t);
+  return h.replace(/<\/article>\s*$/,wBtn(k,t.name,"card")+"</article>");};
+const _mi43=mInspect;mInspect=function(obj){const r=_mi43.apply(this,arguments);
+  try{const hd=document.querySelector("#mSheetBody .mshd"),x=hd&&hd.querySelector("[data-x]");const k=obj&&obj.ref&&(obj.type==="site"?"s:":"d:")+obj.ref.id;
+    if(x&&k&&!hd.querySelector("[data-wish]"))x.insertAdjacentHTML("beforebegin",wBtn(k,obj.ref.name));}catch(e){}return r;};
+const _msr43=mSelectRoute;mSelectRoute=function(id){const r=_msr43.apply(this,arguments);
+  try{if(id!=="custom"&&!String(id).startsWith("tp-")){const t=byIdAll(id),hd=document.querySelector("#mSheetBody .mshd"),x=hd&&hd.querySelector("[data-x]");
+    if(t&&x&&!hd.querySelector("[data-wish]"))x.insertAdjacentHTML("beforebegin",wBtn("r:"+id,t.name));}}catch(e){}return r;};
+const _mod43=mOpenDetail;mOpenDetail=function(id){const r=_mod43.apply(this,arguments);
+  try{const bar=document.querySelector("#mPage .mpbar");const old=bar.querySelector("[data-wish]");if(old)old.remove();
+    const t=SITEBY[id]||byIdAll(id);if(t&&!String(id).startsWith("tp-"))bar.insertAdjacentHTML("beforeend",wBtn((SITEBY[id]?"s:":t.kind==="dest"?"d:":"r:")+id,t.name));}catch(e){}return r;};
+// the map gets a ♥ layer
+if(MXL.wish==null)MXL.wish=true;
+const _mlc43=mLayerChips;mLayerChips=function(){_mlc43.apply(this,arguments);const el=$m("mLayers");if(!el||el.querySelector('[data-l="wish"]'))return;
+  const b=document.createElement("button");b.className="mchip";b.dataset.l="wish";b.setAttribute("aria-pressed",!!MXL.wish);b.innerHTML="♥ Saved";
+  b.onclick=()=>{MXL.wish=!MXL.wish;mxSave();b.setAttribute("aria-pressed",!!MXL.wish);mDrawMap();};el.insertBefore(b,el.children[1]||null);};
+var MWG=null;
+function wLL(k){const o=wObj(k);if(!o)return null;if(k[0]==="r"){const s=o.stops&&o.stops[Math.floor(o.stops.length/2)];return s?[s[1],s[2]]:null;}return o.ll;}
+const _mdm43=mDrawMap;mDrawMap=function(){_mdm43.apply(this,arguments);if(!MMAP)return;
+  if(!MWG)MWG=L.layerGroup().addTo(MMAP);MWG.clearLayers();if(!MXL.wish)return;
+  WISH.forEach(k=>{const ll=wLL(k),o=wObj(k);if(!ll||!o)return;
+    L.marker(ll,{icon:L.divIcon({className:"",html:`<div class="mwmk">${HEART}</div>`,iconSize:[26,26],iconAnchor:[13,13]}),zIndexOffset:1200})
+      .addTo(MWG).on("click",e=>{L.DomEvent.stop(e);if(k[0]==="r")mSelectRoute(o.id);else mInspect({type:k[0]==="s"?"site":"dest",ref:o});});});};
+function wCityKey(k){const o=wObj(k);if(!o)return null;if(k[0]==="d")return CITIES[o.id]?o.id:null;
+  if(k[0]==="s"){const ck=Object.keys(CITIES).find(c=>CITIES[c].site===o.id);return ck||CITYBYNAME[o.where]||null;}return null;}
+function wRegion(k){const o=wObj(k);if(!o)return "";return k[0]==="d"?(o.region||"").split(" · ")[0]:(o.cont||"");}
+function mPlanWish(){const places=WISH.filter(k=>k[0]!=="r"&&wCityKey(k));if(!places.length){mToast("Save a few places or landmarks first");return;}
+  const groups={};places.forEach(k=>{const g=wRegion(k)||"Elsewhere";(groups[g]=groups[g]||[]).push(k);});
+  const big=Object.keys(groups).sort((a,b)=>groups[b].length-groups[a].length)[0];
+  const m=$m("mModal");
+  m.innerHTML=`<div class="mmhd"><button class="mx" data-x aria-label="Close">×</button><h2>Plan from your wishlist</h2></div>
+    <div class="mmbody mform"><p style="color:var(--muted);margin:10px 0 0;font-size:13.5px">Pick the places for one trip. Travelor puts them in the shortest order from O'Hare — you can reorder afterwards.</p>
+      ${Object.keys(groups).sort((a,b)=>groups[b].length-groups[a].length).map(g=>`<div class="msec">${esc(g)} · ${groups[g].length}</div>
+        ${groups[g].map(k=>{const o=wObj(k);return `<label class="mswitch" style="min-height:48px"><span><b>${esc(o.name)}</b> <small style="color:var(--muted)">${esc(k[0]==="s"?o.where+" · landmark":o.country)}</small></span><input type="checkbox" data-pk="${k}"${g===big?" checked":""}></label>`;}).join("")}`).join("")}</div>
+    <div class="mmfoot"><button class="mbtn" data-go="add">Add to my trip</button><button class="mbtn pri" data-go="new">New trip</button></div>`;
+  m.classList.add("on");mPush("modal");m.querySelector("[data-x]").onclick=()=>mPop();
+  const go=mode=>{let ks=[...m.querySelectorAll("[data-pk]:checked")].map(b=>wCityKey(b.dataset.pk)).filter(Boolean);ks=[...new Set(ks)];
+    if(!ks.length){mToast("Tick at least one place");return;}
+    // greedy order from O'Hare, then the usual 2-opt polish
+    const out=[];let cur=HUB.ll,left=ks.slice();while(left.length){left.sort((a,b)=>haversine(cur,CITIES[a].ll)-haversine(cur,CITIES[b].ll));const k=left.shift();out.push(k);cur=CITIES[k].ll;}
+    if(mode==="new"){state.custom=out;state.customN={};}else state.custom=(state.custom||[]).concat(out.filter(k=>!(state.custom||[]).includes(k)));
+    try{localStorage.setItem("travelor-customN",JSON.stringify(state.customN));}catch(e){}
+    ORDMSG=`Built from your wishlist · ${out.length} place${out.length>1?"s":""}, nearest-first from O'Hare. Drag ≡ Reorder to change it.`;
+    persistCustom();mPop();renderCustom();mTab("build");};
+  m.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));}
+
+// ---------- trip dates, weather and best months ----------
+var MBD="";try{MBD=localStorage.getItem("travelor-bdate")||"";}catch(e){}
+var MBM=null;
+function bdSet(v){MBD=/^\d{4}-\d\d-\d\d$/.test(v||"")?v:"";try{localStorage.setItem("travelor-bdate",MBD);}catch(e){}}
+function dAdd(iso,n){const d=new Date(iso+"T12:00");d.setDate(d.getDate()+n);return d;}
+function dFmt(d){return d.toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"});}
+function climOf(c){if(c.dest&&byId[c.dest])return {d:byId[c.dest],proxy:false};const n=nearestDest(c.ll);return n.d&&n.km<450?{d:n.d,proxy:true}:null;}
+function tripMonthScores(keys){const w=keys.map((k,i)=>Math.max(.3,nightsOf(k,i)));const cl=keys.map(k=>climOf(CITIES[k]));
+  return MON3.map((_,m)=>{let s=0,W=0;cl.forEach((c,i)=>{if(!c)return;s+=comfort(c.d,m)*w[i];W+=w[i];});return W?s/W:0;});}
+function planMonth(){return MBD?(+MBD.slice(5,7)):(MBM||state.month||new Date().getMonth()+1);}
+function stopOffsets(keys){const off=[];let d=0;keys.forEach((k,i)=>{off.push(d);const n=nightsOf(k,i);d+=n;if(i<keys.length-1&&n>0)d+=1;});return off;}
+const _mrb43=mRenderBuild;mRenderBuild=function(){_mrb43.apply(this,arguments);
+  const v=$m("mvBuild");if(!v||v.hidden)return;const keys=(state.custom||[]).filter(k=>CITIES[k]);if(!keys.length)return;
+  const sc=v.querySelector(".mbsc");if(!sc)return;
+  let t=null;try{t=buildCustom();}catch(e){}const days=t&&t.days?t.days[1]:keys.reduce((a,k,i)=>a+nightsOf(k,i),0);
+  const scores=tripMonthScores(keys),pm=planMonth(),best=scores.map((s,i)=>[s,i]).sort((a,b)=>b[0]-a[0]).slice(0,3).map(x=>MON3[x[1]]);
+  const col=s=>s>=.75?"#8aa66b":s>=.55?"#c9a46a":s>=.4?"#d19a66":"#c9646a";
+  const when=`<div class="mwhen"><label>Trip starts<input type="date" id="mBDate" value="${MBD}"></label>${MBD?`<button class="clr" id="mBDclr">Clear</button>`:""}
+    <div class="sum">${MBD?`<b>${dFmt(dAdd(MBD,0))}</b> → <b>${dFmt(dAdd(MBD,Math.max(0,days-1)))}</b> · ${days} days on the ground${(()=>{const n=Math.round((dAdd(MBD,0)-new Date())/864e5);return n>0?` · <span style="color:var(--accent)">in ${n} days</span>`:"";})()}`
+      :`No dates yet — weather below is for <b>${MON3[pm-1]}</b>. Best months for this exact route: <b>${best.join(", ")}</b>.`}</div>
+    <div style="flex:1 1 100%"><div class="mmo" id="mMo">${scores.map((s,i)=>`<button data-m="${i+1}" class="${i+1===pm?"sel":""}" aria-label="${MON3[i]} ${Math.round(s*100)}%"><i style="height:${Math.round(8+s*36)}px;background:${col(s)}"></i>${MON3[i][0]}</button>`).join("")}</div></div></div>`;
+  const dash=sc.querySelector(".bdash");if(dash)dash.insertAdjacentHTML("beforebegin",when);else sc.insertAdjacentHTML("afterbegin",when);
+  const inp=$m("mBDate");inp.onchange=()=>{bdSet(inp.value);renderCustom();};
+  const clr=$m("mBDclr");if(clr)clr.onclick=()=>{bdSet("");renderCustom();};
+  $m("mMo").querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{const m=+b.dataset.m,s=scores[m-1];
+    if(MBD){mToast(`${MON3[m-1]}: ${Math.round(s*100)}% comfortable for this route · change the start date to move the trip`);return;}
+    MBM=m;renderCustom();});
+  // per-stop weather
+  const off=stopOffsets(keys);
+  v.querySelectorAll(".mbs[data-i]").forEach(row=>{const i=+row.dataset.i,c=CITIES[keys[i]],cl=climOf(c);if(!cl)return;
+    const m=MBD?dAdd(MBD,off[i]).getMonth()+1:pm;const T=cl.d.temps[m-1],prime=cl.d.best.includes(m),cf=comfort(cl.d,m-1);
+    row.insertAdjacentHTML("beforeend",`<div class="mwx"><span class="t">${T}°F</span> highs ${MBD?"on "+dFmt(dAdd(MBD,off[i])):"in "+MON3[m-1]} · ${prime?`<span class="ok">prime</span>`:cf>=.5?"shoulder season":`<span class="off">off-season</span>`}${cl.proxy?` · climate of ${esc(cl.d.name)}`:""}</div>`);});
+  // real dates on the day plan
+  if(MBD){let n=0;v.querySelectorAll(".mday").forEach(dv=>{const b=dv.querySelector("b");if(!b)return;const few=/· a few hours/.test(b.textContent);
+    const d=few?Math.max(0,n-1):n++;b.insertAdjacentHTML("beforebegin",`<em class="mdate">${dFmt(dAdd(MBD,d))}</em>`);});}
+  // rough budget, just above the day plan
+  const secs=[...sc.querySelectorAll(".msec")];const dp=secs.find(s=>/day by day/.test(s.textContent));
+  const html=`<div class="msec">rough budget</div><div class="mbud" id="mBud"></div>`;
+  if(dp)dp.insertAdjacentHTML("beforebegin",html);else sc.insertAdjacentHTML("beforeend",html);
+  mRenderBudget(keys,days);};
+if(typeof tripFromBuild==="function"){const _tfb43=tripFromBuild;tripFromBuild=function(n){const tp=_tfb43.apply(this,arguments);if(tp&&MBD&&!tp.start)tp.start=MBD;return tp;};}
+// opening a saved trip in Build carries its start date with it
+$m("mob").addEventListener("click",e=>{const b=e.target.closest('.mtrip [data-o="edit"]');if(!b)return;const tp=TRIPS.find(t=>t.id===b.closest(".mtrip").dataset.tp);if(tp)bdSet(tp.start||"");},true);
+if(typeof loadPackToBuild==="function"){const _lp43=loadPackToBuild;loadPackToBuild=function(p){if(p&&p.d)bdSet(p.d);return _lp43.apply(this,arguments);};}
+
+// ---------- rough budget ----------
+var MBUD={t:2,s:1};try{Object.assign(MBUD,JSON.parse(localStorage.getItem("travelor-bud")||"{}"));}catch(e){}
+function estBudget(keys,days,trav,style){const chain=keys.map(k=>CITIES[k]);
+  const SF=[[.85,.55,.6],[1,1,1],[2.6,2.4,2]][style];// flights, stays, daily
+  const peak=(m=>m>=6&&m<=8)(planMonth())?1.12:1;
+  const mi=(haversine(HUB.ll,chain[0].ll)+haversine(chain[chain.length-1].ll,HUB.ll))*0.621371;
+  const fly=Math.max(320,0.085*mi+180)*SF[0]*peak*trav;
+  let move=0;for(let i=1;i<chain.length;i++){let Lk=null;try{Lk=linkInfo(chain[i-1],chain[i]);}catch(e){}const m=Lk?Lk.km*0.621371:haversine(chain[i-1].ll,chain[i].ll)*0.621371;const md=Lk?Lk.mode:legMode(m/0.621371);
+    move+=md==="fly"?(70+0.1*m)*trav*(style===2?1.8:1):md==="train"?(10+0.16*m)*trav*(style===2?1.6:1):md==="ferry"?(25+0.22*m)*trav:md==="drive"?(45+0.22*m)*Math.ceil(trav/4):0;}
+  const rooms=Math.ceil(trav/2),cost=c=>{const cl=climOf(c);return cl?cl.d.cost:3;};
+  let stay=0,daily=0;chain.forEach((c,i)=>{const n=nightsOf(keys[i],i),ci=Math.max(1,Math.min(4,cost(c)));
+    stay+=n*[55,95,150,230][ci-1]*SF[1]*rooms*peak;daily+=Math.max(n,.5)*[30,55,90,135][ci-1]*SF[2]*trav;});
+  const total=fly+move+stay+daily;return {fly,move,stay,daily,total,pp:total/trav,ppd:total/trav/Math.max(1,days)};}
+function mRenderBudget(keys,days){const el=$m("mBud");if(!el)return;const B=estBudget(keys,days,MBUD.t,MBUD.s);
+  const $=n=>"$"+(Math.round(n/10)*10).toLocaleString();
+  const parts=[["Flights from O'Hare",B.fly,"#cf7a3d"],["Getting around",B.move,"#8aa66b"],["Places to stay",B.stay,"#6a5c46"],["Food, sights, local",B.daily,"#c9646a"]];
+  el.innerHTML=`<div class="ctl"><div class="seg" role="group" aria-label="Travel style">${["Shoestring","Comfort","Splurge"].map((s,i)=>`<button data-s="${i}" aria-pressed="${MBUD.s===i}">${s}</button>`).join("")}</div>
+      <div class="trav"><button data-t="-1" aria-label="One traveller fewer"${MBUD.t<=1?" disabled":""}>−</button><b>${MBUD.t} ${MBUD.t>1?"people":"person"}</b><button data-t="1" aria-label="One traveller more"${MBUD.t>=8?" disabled":""}>+</button></div></div>
+    <div class="tot">${$(B.total)}</div><div class="pp">≈ ${$(B.pp)} per person · ${$(B.ppd)} per person per day${(planMonth()>=6&&planMonth()<=8)?" · summer prices":""}</div>
+    <div class="mbbar">${parts.map(p=>`<i style="flex:${Math.max(1,p[1])};background:${p[2]}" title="${p[0]}"></i>`).join("")}</div>
+    <div class="rows">${parts.map(p=>`<i style="background:${p[2]}"></i><span>${p[0]}</span><b>${$(p[1])}</b>`).join("")}</div>
+    <p class="fine">A rough guide from distances, each place's cost level and your style — not live prices. Booking early and shoulder months usually come in under it.</p>`;
+  el.querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>{MBUD.s=+b.dataset.s;bSave();mRenderBudget(keys,days);});
+  el.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{MBUD.t=Math.max(1,Math.min(8,MBUD.t+(+b.dataset.t)));bSave();mRenderBudget(keys,days);});}
+function bSave(){try{localStorage.setItem("travelor-bud",JSON.stringify(MBUD));}catch(e){}}
+
+// ---------- My Trips: the wishlist shelf ----------
+const _mrt43=mRenderTrips;mRenderTrips=function(){_mrt43.apply(this,arguments);const v=$m("mvTrips");if(!v||v.hidden)return;
+  WISH=WISH.filter(k=>wObj(k));
+  const anchor=v.querySelector(".mscr")||v.querySelector(".mstats");if(!anchor)return;
+  const card=k=>{const o=wObj(k),t=k[0];const ph=t==="s"?mPh(o.wiki,o.name,""):mPh(phTitle(o),o.name,"");
+    return `<button class="mwc" data-wo="${k}">${ph}<b>${esc(o.name)}</b><small>${t==="s"?(isWonder(o)?"✦ wonder":"landmark"):t==="d"?esc(o.country):"route · "+o.stops.length+" stops"}</small><span class="rm" data-wrm="${k}" role="button" aria-label="Remove">×</span></button>`;};
+  anchor.insertAdjacentHTML("afterend",`<div class="msec" id="mWish">♥ wishlist · ${WISH.length}</div>
+    ${WISH.length?`<div class="mwrow">${WISH.map(card).join("")}</div>${WISH.some(k=>k[0]!=="r")?`<button class="mbtn" id="mPlanW" style="width:100%;min-height:48px;margin-top:4px">Plan a trip from your wishlist</button>`:""}`
+      :`<p style="color:var(--muted);margin:0;font-size:13.5px">Tap ♥ on any place, landmark or route to keep it here — then turn a handful into a trip.</p>`}`);
+  v.querySelectorAll(".mwc").forEach(c=>c.onclick=e=>{const rm=e.target.closest("[data-wrm]");const k=c.dataset.wo,o=wObj(k);
+    if(rm){WISH=WISH.filter(x=>x!==k);wSave();mRenderTrips();if(MXL.wish&&MMAP)mDrawMap();return;}mOpenDetail(o.id);});
+  const pw=$m("mPlanW");if(pw)pw.onclick=mPlanWish;mPhotos(v);};
+
+// ---------- offline ----------
+if("serviceWorker" in navigator&&/github\.io$/.test(location.host||"")){try{navigator.serviceWorker.register("sw.js").catch(()=>{});}catch(e){}}
+function mOffline(){let p=$m("mOff");if(navigator.onLine){if(p)p.remove();return;}
+  if(!p){p=document.createElement("div");p.id="mOff";document.body.appendChild(p);}p.textContent="Offline · your trips and maps you've opened still work";}
+window.addEventListener("online",mOffline);window.addEventListener("offline",mOffline);
+// re-render the open tab so every wrapper above shows up straight away
+if(MOB){try{mLayerChips();if(MMAP)mDrawMap();mTab(MTAB,true);}catch(e){console.warn(e);}}
+console.log("mobile round three ready");
+</script>
 
 </body></html>
