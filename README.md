@@ -38,3 +38,10 @@ On the phone you can also:
 - **Postcards.** 🖼 Postcard draws the trip as a 1080×1350 image — route map, dates and totals — ready to share or save.
 - **Add to calendar.** A dated trip exports as a calendar file, with one event for the whole trip and one for each stop.
 - **Faster on phones.** Startup takes about a third less time. The heaviest map job runs in the background.
+
+## Coverage
+
+- **About 500 destinations**, with a write-up for every US state capital and every country's capital. Capitals under a US "Do Not Travel" advisory are kept for reference: they're searchable and addable, but never ranked or suggested.
+- **About 245 multi-stop routes**, including 11 road trips from Chicago such as Route 66, the Lake Michigan and Lake Superior circles, and the Blues Highway.
+- **About 520 landmarks** worldwide.
+- **Chicago as a place.** You can add it as a stop to start and end road trips, and it has its own page.
