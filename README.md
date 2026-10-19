@@ -42,7 +42,7 @@ On the phone you can also:
 ## Coverage
 
 - **About 500 destinations**, with a write-up for every US state capital and every country's capital. Capitals under a US "Do Not Travel" advisory are kept for reference: they're searchable and addable, but never ranked or suggested.
-- **About 245 multi-stop routes**, including 11 road trips from Chicago such as Route 66, the Lake Michigan and Lake Superior circles, and the Blues Highway.
+- **About 405 multi-stop routes**, including 11 road trips from Chicago such as Route 66, the Lake Michigan and Lake Superior circles, and the Blues Highway.
 - **About 520 landmarks** worldwide.
 - **Chicago as a place.** You can add it as a stop to start and end road trips, and it has its own page.
 
@@ -55,3 +55,16 @@ Any stop in a trip can branch into alternatives. Tap **⑂ branch** on a stop (o
 - **Compare plans** shows days, miles, budget and best months side by side.
 - **Make main** promotes a plan, and **Drop** removes it.
 - Saved trips and shared links keep all their plans.
+
+## Desktop layout
+
+- **Home:** this month's #1 pick in a large photo hero, with a month switcher.
+  - "Best right now" photo cards, routes worth the flight, and a world map of the month.
+  - Road trips from Chicago and places within a day's drive.
+  - The 14 wonders, your trips, wishlist and current build.
+- **Filter column:**
+  - Collapsible sections that summarise what's selected.
+  - A continent bar you can click to filter.
+  - A 12-month chart of how many ideas are in their prime each month.
+  - Counts on the continent chips.
+- **Results column:** a compact list with photo thumbnails and small vibe bars, which you can switch back to big cards.
