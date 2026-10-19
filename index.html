@@ -12930,6 +12930,28 @@ function decorateCards(){const list=document.getElementById("list");if(!list)ret
     if(rs[1]){rs[1].classList.add("rs-b");const t=byIdAll(c.dataset.id);if(t&&t.v){const v=document.createElement("span");v.className="vbar";v.title=VNAMES.map((n,j)=>`${n} ${t.v[j]}`).join(" · ");v.innerHTML=t.v.map(x=>`<i style="height:${Math.max(2,Math.round(x/10*16))}px"></i>`).join("");rs[1].insertBefore(v,rs[1].querySelector(".bd"));}}});}
 if(typeof renderList==="function"){const _rl48=renderList;renderList=function(){const r=_rl48.apply(this,arguments);try{if(!MOB){fgSetup();densSetup();decorateCards();fgSummary();clearTimeout(window.__fgT);window.__fgT=setTimeout(()=>{try{fgSummary();}catch(e){}},60);}}catch(e){console.warn(e);}return r;};}
 if(!window.__BOOT&&!MOB){try{fgSetup();densSetup();decorateCards();fgSummary();}catch(e){}}
+
+// ---------- photos: Wikipedia's lead image is sometimes a map, a flag or a seal — use a real photo instead ----------
+(function(){if(typeof phFetch!=="function"||typeof PHC==="undefined")return;
+  const isPhoto=u=>{if(!u)return true;const f=u.split("?")[0].split("/").pop()||"";return /\.(jpe?g|webp)$/i.test(f)&&!/(^|[_-])(map|locator|flag|coat_of_arms|seal|logo)([_.-]|$)/i.test(f);};
+  const FIXED={};
+  function alts(t){const out=[];
+    D.forEach(d=>{const pt=(typeof phTitle==="function"?phTitle(d):d.name);if(pt!==t&&d.name!==t)return;
+      if(typeof sitesNear==="function")sitesNear(d.ll,45).slice(0,3).forEach(o=>out.push(o.s.wiki||o.s.name));(d.near||[]).slice(0,3).forEach(n=>out.push(n[0]));});
+    SITES.forEach(s=>{if((s.wiki||s.name)===t&&s.where)out.push(s.where);});
+    ALL.forEach(x=>{if(x.kind==="string"&&x.stops&&x.stops[0][0]===t)x.stops.slice(1,3).forEach(s=>out.push(s[0]));});
+    return [...new Set(out)].filter(a=>a&&a!==t);}
+  const _phf48=phFetch;
+  async function fix(titles){const bad=titles.filter(t=>PHC[t]&&!isPhoto(PHC[t])&&!FIXED[t]);if(!bad.length)return;
+    const A={};bad.forEach(t=>{FIXED[t]=1;A[t]=alts(t).slice(0,5);});
+    const want=[...new Set(Object.values(A).flat())].filter(a=>PHC[a]===undefined);
+    if(want.length){try{await _phf48(want);}catch(e){}}
+    bad.forEach(t=>{const g=A[t].find(a=>PHC[a]&&isPhoto(PHC[a]));PHC[t]=g?PHC[g]:null;
+      document.querySelectorAll(`[data-photo="${CSS.escape(t)}"]`).forEach(el=>{el.dataset.phDone="";el.querySelectorAll("img").forEach(i=>i.remove());});});
+    try{phSave();}catch(e){}phApply();}
+  phFetch=async function(titles){const r=await _phf48.apply(this,arguments);try{await fix(titles||[]);}catch(e){}return r;};
+  // photos cached from earlier visits get the same check
+  setTimeout(()=>{try{fix(Object.keys(PHC));}catch(e){}},1500);})();
 window.fgSummary=fgSummary;window.fgSetup=fgSetup;
 // whatever re-renders the list or flips a filter chip, the summaries and card extras follow
 (function(){let t=0;const kick=()=>{clearTimeout(t);t=setTimeout(()=>{try{if(!MOB){fgSetup();densSetup();decorateCards();fgSummary();}}catch(e){}},40);};
