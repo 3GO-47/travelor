@@ -7080,6 +7080,8 @@ it:[["Calgary","Land, Stephen Avenue, a Stampede night if it's July."],["Drumhel
   Object.entries(MERGE).forEach(([drop,keep])=>{const i=D.findIndex(d=>d.id===drop),k=D.find(d=>d.id===keep);if(i<0||!k)return;
     const g=D[i];if(g.cap&&!k.cap)k.cap=g.cap;D.splice(i,1);S.forEach(s=>s.stops.forEach(st=>{if(st[4]===drop)st[4]=keep;}));});
   const sa=D.find(d=>d.id==="saotome");if(sa&&!sa.cap){sa.cap="São Tomé and Príncipe";sa.wiki=sa.wiki||"São Tomé";}
+  // routes that cross the 180° meridian (Fiji ↔ Taveuni/Tonga) keep continuous longitudes, so lines take the short way
+  S.forEach(s=>{for(let i=1;i<s.stops.length;i++){const a=s.stops[i-1],b=s.stops[i];while(b[2]-a[2]>180)b[2]-=360;while(b[2]-a[2]<-180)b[2]+=360;}});
   const km=(a,b)=>{const R=6371,t=Math.PI/180,x=(b[0]-a[0])*t,y=(b[1]-a[1])*t;const h=Math.sin(x/2)**2+Math.cos(a[0]*t)*Math.cos(b[0]*t)*Math.sin(y/2)**2;return 2*R*Math.asin(Math.sqrt(h));};
   // route stops with no linked place pick up the nearest one within 40 km (a capital page, usually)
   S.forEach(s=>s.stops.forEach(st=>{if(st[4])return;let best=null,bd=40;D.forEach(d=>{const k=km([st[1],st[2]],d.ll);if(k<bd){bd=k;best=d;}});if(best)st[4]=best.id;}));
@@ -11058,6 +11060,12 @@ if(typeof byIdAll==="function"){const _bia45=byIdAll;let M=null,N=-1;byIdAll=fun
 (function(){const c=(typeof byId!=="undefined"&&byId.chicago)||D.find(d=>d.id==="chicago");if(c){c.home=true;c.hours=0;c.km=0;c.mi=0;}})();
 const _m45=matches;matches=function(t){if(t&&(t.home||t.nogo))return false;return _m45(t);};
 if(typeof fitScore==="function"){const _fs45=fitScore;fitScore=function(t){const s=_fs45(t);return t&&t.draw===3?s-0.3:t&&t.draw===2?s-0.1:s;};}
+
+// great-circle lines are unwrapped point by point, so a leg across the 180° meridian takes the short way, not the whole globe
+if(typeof geoPts==="function"){const _gp45=geoPts;geoPts=function(a,b,n){const pts=_gp45.apply(this,arguments);const want=b&&b[1]!=null?b[1]:null;
+  for(let i=1;i<pts.length;i++){let d=pts[i][1]-pts[i-1][1];while(d>180){pts[i][1]-=360;d-=360;}while(d<-180){pts[i][1]+=360;d+=360;}}
+  if(want!=null&&pts.length){const L=pts[pts.length-1];const off=Math.round((want-L[1])/360)*360;if(off)pts.forEach(p=>p[1]+=off);}return pts;};}
+if(typeof landAt==="function"){const _la45=landAt;landAt=function(p){return _la45([p[0],((p[1]+540)%360+360)%360-180]);};}
 </script>
 <style>
 /* offscreen cards skip layout and paint entirely */
