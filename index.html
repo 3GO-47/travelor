@@ -8992,6 +8992,41 @@ const _rr27=renderRoutes;renderRoutes=function(){_rr27();setTimeout(drawSiteMark
 (function(){const n=document.getElementById("rtcSite");if(n)n.textContent=SITES.length;})();
 console.log("sites:",SITES.length,"tier1:",SITES.filter(s=>s.tier===1).length);
 </script>
+<script>
+// ---------- more places you can add as a stop (no write-up needed): North American cities for road trips and branches ----------
+var MORECITIES=[
+"Knoxville|USA|35.96|-83.92","Chattanooga|USA|35.05|-85.31","Lexington, Kentucky|USA|38.04|-84.50","Cincinnati|USA|39.10|-84.51","Cleveland|USA|41.50|-81.69","Detroit|USA|42.33|-83.05",
+"Toledo|USA|41.65|-83.54","Grand Rapids|USA|42.96|-85.67","Milwaukee|USA|43.04|-87.91","Green Bay|USA|44.51|-88.01","Fargo|USA|46.88|-96.79","Sioux Falls|USA|43.55|-96.73",
+"Omaha|USA|41.26|-95.94","Kansas City|USA|39.10|-94.58","Wichita|USA|37.69|-97.34","Tulsa|USA|36.15|-95.99","Dallas|USA|32.78|-96.80","Fort Worth|USA|32.76|-97.33",
+"Houston|USA|29.76|-95.37","San Antonio|USA|29.42|-98.49","El Paso|USA|31.76|-106.49","Albuquerque|USA|35.08|-106.65","Tucson|USA|32.22|-110.97","Flagstaff|USA|35.20|-111.65",
+"Sedona|USA|34.87|-111.76","Reno|USA|39.53|-119.81","Portland, Oregon|USA|45.52|-122.68","Seattle|USA|47.61|-122.33","Spokane|USA|47.66|-117.43","Bozeman|USA|45.68|-111.04",
+"Missoula|USA|46.87|-113.99","Jackson, Wyoming|USA|43.48|-110.76","Rapid City|USA|44.08|-103.23","Colorado Springs|USA|38.83|-104.82","Boulder|USA|40.01|-105.27","Aspen|USA|39.19|-106.82",
+"Moab|USA|38.57|-109.55","St. George, Utah|USA|37.10|-113.58","Santa Barbara|USA|34.42|-119.70","Monterey|USA|36.60|-121.89","Fresno|USA|36.74|-119.79","Anchorage|USA|61.22|-149.90",
+"Fairbanks|USA|64.84|-147.72","Hilo|USA|19.72|-155.08","Kailua-Kona|USA|19.64|-155.99","Mobile, Alabama|USA|30.69|-88.04","Birmingham, Alabama|USA|33.52|-86.80","Huntsville, Alabama|USA|34.73|-86.59",
+"Savannah|USA|32.08|-81.09","Charleston, South Carolina|USA|32.78|-79.93","Asheville|USA|35.60|-82.55","Charlotte|USA|35.23|-80.84","Durham|USA|35.99|-78.90","Wilmington, North Carolina|USA|34.23|-77.94",
+"Norfolk|USA|36.85|-76.29","Virginia Beach|USA|36.85|-75.98","Williamsburg, Virginia|USA|37.27|-76.71","Charlottesville|USA|38.03|-78.48","Baltimore|USA|39.29|-76.61","Buffalo|USA|42.89|-78.88",
+"Rochester, New York|USA|43.16|-77.61","Syracuse|USA|43.05|-76.15","Ithaca|USA|42.44|-76.50","Lake Placid|USA|44.28|-73.98","Burlington, Vermont|USA|44.48|-73.21","Portland, Maine|USA|43.66|-70.26",
+"Bar Harbor|USA|44.39|-68.20","Newport, Rhode Island|USA|41.49|-71.31","New Haven|USA|41.31|-72.92","Atlantic City|USA|39.36|-74.42","Cape May|USA|38.94|-74.91","Orlando|USA|28.54|-81.38",
+"Tampa|USA|27.95|-82.46","St. Augustine|USA|29.90|-81.31","Jacksonville|USA|30.33|-81.66","Key West|USA|24.56|-81.78","Fort Lauderdale|USA|26.12|-80.14","Naples, Florida|USA|26.14|-81.79",
+"Pensacola|USA|30.42|-87.22","Destin|USA|30.39|-86.50","Gatlinburg|USA|35.71|-83.51","Branson|USA|36.64|-93.22","Dubuque|USA|42.50|-90.66","Iowa City|USA|41.66|-91.53",
+"Peoria|USA|40.69|-89.59","Champaign|USA|40.12|-88.24","Bloomington, Indiana|USA|39.17|-86.53","Fort Wayne|USA|41.08|-85.14","South Bend|USA|41.68|-86.25","Ann Arbor|USA|42.28|-83.74",
+"Kalamazoo|USA|42.29|-85.59","Mackinac Island|USA|45.85|-84.62","Marquette|USA|46.54|-87.40","Wisconsin Dells|USA|43.63|-89.77","Sturgeon Bay|USA|44.83|-87.38","La Crosse|USA|43.80|-91.24",
+"Rochester, Minnesota|USA|44.02|-92.47","Duluth|USA|46.79|-92.10","Galena|USA|42.42|-90.43","St. Louis|USA|38.63|-90.20","Memphis|USA|35.15|-90.05","Nashville|USA|36.16|-86.78",
+"Louisville|USA|38.25|-85.76","Pittsburgh|USA|40.44|-80.00","Philadelphia|USA|39.95|-75.17","San Francisco|USA|37.77|-122.42","Los Angeles|USA|34.05|-118.24","San Diego|USA|32.72|-117.16",
+"Las Vegas|USA|36.17|-115.14","Miami|USA|25.76|-80.19","New Orleans|USA|29.95|-90.07","Minneapolis|USA|44.98|-93.27","Cancún|Mexico|21.16|-86.85","Monterrey|Mexico|25.69|-100.32",
+"Querétaro|Mexico|20.59|-100.39","Mérida|Mexico|20.97|-89.62","Tijuana|Mexico|32.51|-117.04","Toronto|Canada|43.65|-79.38","Montréal|Canada|45.50|-73.57","Québec City|Canada|46.81|-71.21",
+"Vancouver|Canada|49.28|-123.12","Victoria, British Columbia|Canada|48.43|-123.37","Halifax|Canada|44.65|-63.58","Winnipeg|Canada|49.90|-97.14","Edmonton|Canada|53.55|-113.49","Saskatoon|Canada|52.13|-106.67",
+"Kingston, Ontario|Canada|44.23|-76.49","Niagara Falls|Canada|43.09|-79.08","Thunder Bay|Canada|48.38|-89.25","Banff|Canada|51.18|-115.57","Jasper|Canada|52.87|-118.08","Whitehorse|Canada|60.72|-135.06"];
+(function(){if(typeof CITIES==="undefined")return;let n=0;
+  const near=(ll)=>Object.values(CITIES).some(c=>{const t=Math.PI/180,dla=(c.ll[0]-ll[0])*t,dlo=(c.ll[1]-ll[1])*t;const h=Math.sin(dla/2)**2+Math.cos(ll[0]*t)*Math.cos(c.ll[0]*t)*Math.sin(dlo/2)**2;return 2*6371*Math.asin(Math.sqrt(h))<9;});
+  MORECITIES.forEach(r=>{const p=r.split("|");const nm=p[0],ll=[+p[2],+p[3]];const short=nm.split(",")[0];
+    if(CITYBYNAME[nm]||CITYBYNAME[short]||near(ll))return;   // already selectable under its own name or right next door
+    const key="c-"+citySlug(nm);if(CITIES[key])return;
+    CITIES[key]={key,name:nm,country:p[1],ll,dest:null,cont:"North America",nights:2,strings:[],pop:0};CITYBYNAME[nm]=key;n++;});
+  if(n){CITYLIST=Object.values(CITIES).sort((a,b)=>b.pop-a.pop||a.name.localeCompare(b.name));
+    try{state.custom=(JSON.parse(localStorage.getItem("travelor-custom")||"[]")).filter(k=>CITIES[k]);}catch(e){}}
+  console.log("extra stop cities:",n,"cities now:",CITYLIST.length);})();
+</script>
 <style>
 .phstrip{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px;margin:10px 0 2px;height:146px}
 .phstrip .phc{position:relative;border-radius:var(--r2,10px);overflow:hidden;background:var(--panel2);border:1px solid var(--line);display:flex;align-items:flex-end}
@@ -11505,6 +11540,191 @@ if(typeof openDetail==="function"){const _od46=openDetail;openDetail=function(id
   try{if(!MOB&&typeof sheet!=="undefined"){const t=state.sel;if(t&&t.kind==="dest"&&(t.cap||t.nogo||t.home)&&!sheet.querySelector(".dcap")){const h=sheet.querySelector("h2");
     if(h)h.insertAdjacentHTML("afterend",`<div class="dcap" style="margin:6px 0 10px;font:600 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">${t.home?"⌂ home base · Route 66 starts here":""}${t.cap?"🏛 capital of "+esc(t.cap):""}${t.nogo?` <span style="display:block;margin-top:6px;text-transform:none;letter-spacing:0;font:600 13px var(--body);color:#c44536">⚠ ${esc(t.advisory||"Travel advisory")} — kept for reference; check travel.state.gov before planning.</span>`:""}</div>`);}}}catch(e){}return r;};}
 if(MOB){try{mDrawMap();}catch(e){}}
+</script>
+<style>
+/* ---- plans (branching trips) ---- */
+.plbar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0 6px}
+.plchip{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--fg);font:600 12.5px var(--body,system-ui);cursor:pointer}
+.plchip i{width:10px;height:10px;border-radius:50%;flex:none}
+.plchip small{font-weight:500;color:var(--muted)}
+.plchip[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.plfork{margin:4px 0 4px 18px;padding:8px 10px;border-left:3px solid var(--line2);border-radius:0 10px 10px 0;background:var(--bg2);font-size:12.5px;line-height:1.5}
+.plfork .ft{font:600 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:2px}
+.plfork button{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:0;background:transparent;color:var(--fg);padding:5px 0;font:inherit;cursor:pointer;min-height:34px}
+.plfork button i{width:22px;height:22px;border-radius:50%;flex:none;color:#1b1713;font:700 11px/22px var(--mono);text-align:center;font-style:normal}
+.plfork button span{color:var(--muted)}
+.plnote{font-size:12px;color:var(--muted);margin:2px 0 8px}
+.plnote b{color:var(--fg)}
+.pltbl{width:100%;border-collapse:collapse;font-size:12.5px;margin:6px 0 10px}
+.pltbl th{font:600 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:right;padding:4px 6px;border-bottom:1px solid var(--line)}
+.pltbl th:first-child,.pltbl td:first-child{text-align:left}
+.pltbl td{padding:6px;text-align:right;border-bottom:1px solid var(--line);font-family:var(--mono)}
+.pltbl td:first-child{font-family:var(--body,system-ui)}
+.pltbl tr.on td{background:rgba(207,122,61,.08)}
+.pltbl .best{color:#5c7444;font-weight:700}
+.pllbl{width:22px;height:22px;border-radius:50%;color:#1b1713;font:700 11px/20px var(--mono);text-align:center;border:2px solid #fbf8f1;box-shadow:0 2px 6px rgba(0,0,0,.4)}
+#mob .mbs .ops button[data-br]{color:var(--accent);border-color:var(--accent)}
+#mob .plmob .pltbl{font-size:12px}
+</style>
+<script>
+// ============ PLANS: branch any trip at any stop into alternative next legs ============
+// Each plan stores only what is its own: the stops after the point where it leaves its parent plan.
+// The plan you're viewing is always loaded into state.custom, so days, legs, budget, weather, map and
+// postcards all just work; edits to stops shared with other plans flow to them too.
+const PLC=["#cf7a3d","#a27fa3","#8aa66b","#d19a66","#c9646a","#6a5c46"];
+const PLL="ABCDEF";
+var BR=null;
+function brSave(){try{localStorage.setItem("travelor-plans",JSON.stringify(BR));}catch(e){}}
+function brFull(i,seen){const v=BR.v[i];if(!v)return {k:[],n:[]};if(v.p==null)return {k:v.t.slice(),n:v.n.slice()};
+  seen=seen||{};if(seen[i])return {k:v.t.slice(),n:v.n.slice()};seen[i]=1;const P=brFull(v.p,seen);
+  return {k:P.k.slice(0,v.at).concat(v.t),n:P.n.slice(0,v.at).concat(v.n)};}
+function brCur(){const k=(state.custom||[]).slice();return {k,n:k.map((x,i)=>nightsOf(x,i))};}
+function tEq(a,b,i,j,len){for(let x=0;x<len;x++){if(a.k[i+x]!==b.k[j+x]||a.n[i+x]!==b.n[j+x])return false;}return true;}
+function brLcp(a,b){let i=0;while(i<a.k.length&&i<b.k.length&&a.k[i]===b.k[i]&&a.n[i]===b.n[i])i++;return i;}
+function brSame(a,b){return a.k.length===b.k.length&&tEq(a,b,0,0,a.k.length);}
+function brInit(cur){BR={v:[{p:null,at:0,t:cur.k.slice(),n:cur.n.slice()}],a:0};brSave();}
+function brCount(){return BR?BR.v.length:1;}
+// set plan i's whole path; returns nothing — parent and children are kept consistent
+function brSet(i,F){const v=BR.v[i],old=brFull(i);
+  const kids=BR.v.map((c,j)=>c.p===i?j:-1).filter(j=>j>=0).map(j=>({j,full:brFull(j),at:BR.v[j].at}));
+  if(v.p!=null){const at=v.at,tail={k:old.k.slice(at),n:old.n.slice(at)},L=tail.k.length;
+    const ends=F.k.length>=L&&tEq(F,tail,F.k.length-L,0,L),np=F.k.length-L;
+    const pre={k:F.k.slice(0,np),n:F.n.slice(0,np)},oldPre={k:old.k.slice(0,at),n:old.n.slice(0,at)};
+    if(ends&&L>0&&!brSame(pre,oldPre)){const P=brFull(v.p);
+      brSet(v.p,{k:pre.k.concat(P.k.slice(at)),n:pre.n.concat(P.n.slice(at))});v.at=np;v.t=tail.k;v.n=tail.n;}
+    else{const P=brFull(v.p);const l=brLcp(F,P);v.at=l;v.t=F.k.slice(l);v.n=F.n.slice(l);}}
+  else{v.t=F.k.slice();v.n=F.n.slice();}
+  const now=brFull(i);
+  kids.forEach(({j,full,at})=>{const c=BR.v[j];const after={k:old.k.slice(at),n:old.n.slice(at)},L=after.k.length;
+    const ends=now.k.length>=L&&tEq(now,after,now.k.length-L,0,L),np=now.k.length-L;
+    if(ends&&!brSame({k:now.k.slice(0,np),n:now.n.slice(0,np)},{k:old.k.slice(0,at),n:old.n.slice(0,at)})){c.at=np;}   // shared stops edited: the change flows down
+    else{const l=brLcp(full,now);c.at=l;c.t=full.k.slice(l);c.n=full.n.slice(l);}});}                                  // otherwise the branch keeps its own path
+function brLoadActive(){const F=brFull(BR.a);state.custom=F.k.slice();state.customN={};F.k.forEach((k,i)=>{state.customN[nKey(i)]=F.n[i];});
+  try{localStorage.setItem("travelor-customN",JSON.stringify(state.customN));}catch(e){}persistCustom();}
+// called before every builder render: folds whatever just changed into the plans
+function brSync(){const cur=brCur();
+  if(window.__brLoad!==undefined){const L=window.__brLoad;delete window.__brLoad;
+    if(L&&L.v&&L.v.length>1){BR=JSON.parse(JSON.stringify(L));if(!BR.v[BR.a])BR.a=0;
+      if(!BR.v.every(v=>v.t.every(k=>CITIES[k]))){brInit(cur);return;}brLoadActive();brSave();return;}
+    brInit(cur);return;}
+  if(!BR){try{BR=JSON.parse(localStorage.getItem("travelor-plans")||"null");}catch(e){BR=null;}
+    if(!BR||!BR.v||!BR.v.length||!brSame(brFull(BR.a),cur)){brInit(cur);return;}return;}
+  const act=brFull(BR.a);if(brSame(act,cur))return;
+  if(!cur.k.length){brInit(cur);return;}
+  // a wholesale replacement (another trip loaded) starts fresh rather than mangling the old plans
+  if(act.k.length&&BR.v.length>1){const s=new Set(act.k);const ov=cur.k.filter(k=>s.has(k)).length/Math.max(cur.k.length,act.k.length);if(ov<0.34){brInit(cur);return;}}
+  brSet(BR.a,cur);brSave();}
+function brName(i){const F=brFull(i);if(i===0)return "Plan A";const R=brFull(0);const l=brLcp(F,R);const nx=F.k[l];return `Plan ${PLL[i]}`+(nx&&CITIES[nx]?` · via ${CITIES[nx].name}`:" · not started");}
+function brSwitch(i){if(!BR||!BR.v[i])return;brSync();
+  // an alternative that never got a stop of its own is dropped when you leave it
+  const leaving=BR.a,lv=BR.v[leaving];
+  BR.a=i;if(leaving!==i&&lv&&lv.p!=null&&!lv.t.length){brDropRaw(leaving);}
+  ORDUNDO=null;ORDMSG="";brLoadActive();brSave();renderCustom();}
+function brBranch(i){brSync();if(BR.v.length>=6){(MOB?mToast:alert)("Six plans is the limit — drop one first");return null;}
+  BR.v.push({p:BR.a,at:i+1,t:[],n:[]});BR.a=BR.v.length-1;ORDUNDO=null;ORDMSG="";brLoadActive();brSave();renderCustom();return BR.a;}
+function brNormalize(fulls,root){const R=fulls[root];const order=[root].concat(fulls.map((_,i)=>i).filter(i=>i!==root));
+  BR.v=order.map((oi,ni)=>{const F=fulls[oi];if(ni===0)return {p:null,at:0,t:F.k.slice(),n:F.n.slice()};const l=brLcp(F,R);return {p:0,at:l,t:F.k.slice(l),n:F.n.slice(l)};});
+  return order;}
+function brDropRaw(j){const fulls=BR.v.map((_,i)=>brFull(i));const act=BR.a;fulls.splice(j,1);
+  const newAct=act===j?0:act>j?act-1:act;brNormalize(fulls,0);BR.a=Math.min(newAct,BR.v.length-1);}
+function brDrop(j){if(!BR||j===0||!BR.v[j])return;brSync();brDropRaw(j);brLoadActive();brSave();renderCustom();}
+function brPromote(j){if(!BR||!BR.v[j]||j===0)return;brSync();const fulls=BR.v.map((_,i)=>brFull(i));const order=brNormalize(fulls,j);BR.a=0;brLoadActive();brSave();renderCustom();}
+// numbers like the trip notebook: shared stops 1,2,3 — this plan's own stops 4b, 5b
+function brNum(i){if(!BR||BR.a===0||BR.v.length<2)return String(i+1);const l=brLcp(brFull(BR.a),brFull(0));return i<l?String(i+1):(i+1)+PLL[BR.a].toLowerCase();}
+// where the other plans leave this one
+function brForks(){if(!BR||BR.v.length<2)return {};const A=brFull(BR.a),out={};
+  BR.v.forEach((_,j)=>{if(j===BR.a)return;const F=brFull(j);const f=brLcp(A,F);(out[f]=out[f]||[]).push({j,F,f});});return out;}
+// numbers for every plan (temporarily loads each one, then restores the one you're viewing)
+function brStats(){if(!BR)return [];const keep={c:state.custom.slice(),n:Object.assign({},state.customN)};const out=[];
+  BR.v.forEach((_,j)=>{const F=brFull(j);state.custom=F.k.slice();state.customN={};F.k.forEach((k,i)=>{state.customN[nKey(i)]=F.n[i];});
+    let c=null;try{c=F.k.length?buildCustom():null;}catch(e){}
+    const days=c?c.days[1]:0,nights=F.n.reduce((a,b)=>a+b,0);let bud=null;try{if(F.k.length&&typeof estBudget==="function"){const m=window.MBUD||{t:2,s:1};bud=estBudget(F.k,days,m.t,m.s);}}catch(e){}
+    let sc=null;try{if(F.k.length&&typeof tripMonthScores==="function")sc=tripMonthScores(F.k);}catch(e){}
+    let km=0;for(let i=1;i<F.k.length;i++)km+=haversine(CITIES[F.k[i-1]].ll,CITIES[F.k[i]].ll);
+    out.push({j,F,days,nights,mi:Math.round(km*0.621371),bud:bud?bud.total:null,best:sc?sc.map((s,m)=>[s,m]).sort((a,b)=>b[0]-a[0]).slice(0,3).map(x=>MONTHS[x[1]]).join(" "):"",
+      end:F.k.length?CITIES[F.k[F.k.length-1]].name:"—",stops:F.k.length});});
+  state.custom=keep.c;state.customN=keep.n;return out;}
+function brTable(){const st=brStats();if(st.length<2)return "";const minD=Math.min(...st.map(s=>s.days||1e9)),minB=Math.min(...st.map(s=>s.bud||1e12)),minM=Math.min(...st.map(s=>s.mi||1e12));
+  const $=n=>n==null?"—":"$"+(Math.round(n/10)*10).toLocaleString();
+  return `<table class="pltbl"><tr><th>plan</th><th>stops</th><th>days</th><th>miles</th><th>budget</th><th>ends</th></tr>${st.map(s=>`<tr class="${s.j===BR.a?"on":""}" data-plj="${s.j}">
+    <td><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${PLC[s.j]};margin-right:6px"></span>${PLL[s.j]}${s.j===0?" · main":""}</td><td>${s.stops}</td>
+    <td class="${s.days===minD?"best":""}">${s.days}</td><td class="${s.mi===minM?"best":""}">${s.mi.toLocaleString()}</td><td class="${s.bud===minB?"best":""}">${$(s.bud)}</td><td>${esc(s.end)}</td></tr>`).join("")}</table>
+    <div class="plnote">Budget at your current style and group size. Best months — ${st.map(s=>`<b>${PLL[s.j]}</b> ${s.best||"—"}`).join(" · ")}</div>`;}
+function brBarHTML(){if(!BR||BR.v.length<2)return "";const st=brStats();
+  return `<div class="plbar" role="group" aria-label="Plans">${st.map(s=>`<button class="plchip" data-plj="${s.j}" aria-pressed="${s.j===BR.a}"><i style="background:${PLC[s.j]}"></i>${PLL[s.j]}<small>${s.j===0?"main":"via "+esc(brName(s.j).split("via ")[1]||"…")} · ${s.days}d</small></button>`).join("")}</div>`;}
+function brForkHTML(f,list,mob){return `<div class="plfork"><span class="ft">⑂ ${f===0?"other plans start differently":"alternatives from here"}</span>${list.map(o=>{const rest=o.F.k.slice(o.f).map(k=>CITIES[k].name);
+  return `<button data-plj="${o.j}"><i style="background:${PLC[o.j]}">${PLL[o.j]}</i><b>${rest.length?esc(rest.slice(0,4).join(" → "))+(rest.length>4?" …":""):"(ends here)"}</b><span>· ${o.F.k.length-o.f} stop${o.F.k.length-o.f===1?"":"s"}</span></button>`;}).join("")}</div>`;}
+function brWire(root){root.querySelectorAll("[data-plj]").forEach(b=>{if(b.tagName==="TR"){b.style.cursor="pointer";}b.onclick=()=>brSwitch(+b.dataset.plj);});}
+
+// ---------- the phone ----------
+if(typeof mRenderBuild==="function"){const _mrb47=mRenderBuild;mRenderBuild=function(){brSync();_mrb47.apply(this,arguments);
+  const v=$m("mvBuild");if(!v||v.hidden||!(state.custom||[]).length)return;const multi=BR&&BR.v.length>1;
+  // plan bar under the title
+  const sc=v.querySelector(".mbsc");
+  if(multi&&sc){sc.insertAdjacentHTML("afterbegin",`<div class="plmob">${brBarHTML()}
+    <div class="plnote">${BR.a===0?"You're viewing the <b>main plan</b>.":`You're viewing <b>Plan ${PLL[BR.a]}</b> — stops shared with the others are numbered plainly, this plan's own carry a <b>${PLL[BR.a].toLowerCase()}</b>.`}</div>
+    <div class="macts" style="margin:0 0 8px">${`<button class="mbtn" data-pl="cmp">Compare plans</button>`}${BR.a!==0?`<button class="mbtn" data-pl="main">★ Make main</button><button class="mbtn ghost" data-pl="drop">✕ Drop Plan ${PLL[BR.a]}</button>`:""}</div></div>`);
+    brWire(sc.querySelector(".plmob"));
+    const A=(a,f)=>{const b=sc.querySelector(`[data-pl="${a}"]`);if(b)b.onclick=f;};
+    A("cmp",()=>{const m=$m("mModal");m.innerHTML=`<div class="mmhd"><button class="mx" data-x aria-label="Close">×</button><h2>Compare plans</h2></div><div class="mmbody">${brTable()}<p class="plnote">Tap a row to switch to that plan.</p></div>`;
+      m.classList.add("on");mPush("modal");m.querySelector("[data-x]").onclick=()=>mPop();m.querySelectorAll("tr[data-plj]").forEach(r=>r.onclick=()=>{mPop();setTimeout(()=>brSwitch(+r.dataset.plj),200);});});
+    A("main",()=>brPromote(BR.a));A("drop",()=>{if(confirm(`Drop Plan ${PLL[BR.a]}? Shared stops stay in the other plans.`))brDrop(BR.a);});}
+  // stop numbers, a branch button on every stop, and fork cards where other plans leave this one
+  const forks=brForks();
+  v.querySelectorAll(".mbs[data-i]").forEach(row=>{const i=+row.dataset.i;const n=row.querySelector(".mzn");if(n&&multi)n.textContent=brNum(i);
+    const ops=row.querySelector(".ops");if(ops&&!ops.querySelector("[data-br]")){const b=document.createElement("button");b.dataset.br=i;b.textContent="⑂ branch";b.title="Plan an alternative next stop from here";
+      b.onclick=()=>{const j=brBranch(i);if(j==null)return;mToast(`Plan ${PLL[j]}: where to after <b>${esc(CITIES[state.custom[i]].name)}</b>?`);setTimeout(()=>mOpenSearch("add"),250);};ops.insertBefore(b,ops.querySelector("[data-rm]"));}
+    if(forks[i+1]){row.insertAdjacentHTML("afterend",brForkHTML(i+1,forks[i+1],true));brWire(row.nextElementSibling);}});
+  if(forks[0]){const st=v.querySelector(".mstops");if(st){st.insertAdjacentHTML("afterbegin",brForkHTML(0,forks[0],true));brWire(st.firstElementChild);}}};}
+// the phone's mini map and the Explore map draw the other plans as dashed alternatives
+function brDrawAlts(group,onTap){if(!group||!BR||BR.v.length<2)return [];const A=brFull(BR.a),pts=[];
+  BR.v.forEach((_,j)=>{if(j===BR.a)return;const F=brFull(j);const f=brLcp(A,F);const ks=F.k.slice(Math.max(0,f-1));if(ks.length<2&&!(f===0&&ks.length))return;
+    const cs=ks.map(k=>CITIES[k]);let line=[];for(let i=1;i<cs.length;i++){const g=geoPts(cs[i-1].ll,cs[i].ll,18);line=line.concat(i>1?g.slice(1):g);}
+    if(line.length){L.polyline(line,{color:"#0c0a08",weight:7,opacity:.35}).addTo(group);
+      L.polyline(line,{color:PLC[j],weight:4,opacity:.95,dashArray:"7 9"}).addTo(group).on("click",e=>{L.DomEvent.stop(e);onTap(j);});}
+    const end=cs[cs.length-1];L.marker(end.ll,{icon:L.divIcon({className:"",html:`<div class="pllbl" style="background:${PLC[j]}">${PLL[j]}</div>`,iconSize:[22,22],iconAnchor:[11,11]}),zIndexOffset:900}).addTo(group).on("click",e=>{L.DomEvent.stop(e);onTap(j);});
+    cs.forEach(c=>pts.push(c.ll));});return pts;}
+if(typeof mBuildMap==="function"){const _mbm47=mBuildMap;mBuildMap=function(){_mbm47.apply(this,arguments);try{if(BR&&BR.a!==0&&BR.v.length>1&&MBLAYER)MBLAYER.eachLayer(l=>{const ic=l.options&&l.options.icon;if(!ic||!/lbnum/.test(ic.options.html||""))return;const el=l.getElement&&l.getElement();const d=el&&el.querySelector(".lbnum");if(d)d.textContent=d.textContent.split("·").map(x=>brNum(+x-1)).join("·");});}catch(e){}try{const pts=brDrawAlts(MBLAYER,j=>brSwitch(j));
+  if(pts.length&&MBMAP)setTimeout(()=>{try{const all=state.custom.map(k=>CITIES[k].ll).concat(pts);MBMAP.fitBounds(L.latLngBounds(all),{padding:[26,26],maxZoom:8});}catch(e){}},60);}catch(e){}};}
+if(typeof mDrawMap==="function"){const _mdm47=mDrawMap;mDrawMap=function(){_mdm47.apply(this,arguments);try{if(MSEL==="custom"&&MRT)brDrawAlts(MRT,j=>{brSwitch(j);setTimeout(()=>mSelectRoute("custom"),150);});}catch(e){}};}
+
+// ---------- the desktop builder ----------
+if(typeof renderBuilder==="function"){const _rb47=renderBuilder;renderBuilder=function(){brSync();_rb47.apply(this,arguments);
+  const el=document.getElementById("bldChain");if(!el||!(state.custom||[]).length)return;const multi=BR&&BR.v.length>1;
+  const head=el.querySelector(".eyebrow");
+  if(multi&&head&&!el.querySelector(".plbar")){head.insertAdjacentHTML("afterend",`${brBarHTML()}${brTable()}
+    <div class="plnote">${BR.a===0?"Viewing the <b>main plan</b>.":`Viewing <b>Plan ${PLL[BR.a]}</b> — its own stops carry a <b>${PLL[BR.a].toLowerCase()}</b>.`}
+      ${BR.a!==0?` <button class="btn" data-pl="main" style="margin-left:6px">★ make main</button><button class="btn" data-pl="drop">✕ drop</button>`:""}</div>`);
+    brWire(el);const mn=el.querySelector('[data-pl="main"]');if(mn)mn.onclick=()=>brPromote(BR.a);
+    const dr=el.querySelector('[data-pl="drop"]');if(dr)dr.onclick=()=>{if(confirm(`Drop Plan ${PLL[BR.a]}? Shared stops stay in the other plans.`))brDrop(BR.a);};}
+  const forks=brForks();
+  el.querySelectorAll(".bstop").forEach((row,i)=>{const n=row.querySelector(".bnum");if(n&&multi)n.textContent=brNum(i);
+    // nights buttons work per stop position, so a city visited twice keeps two separate counts
+    const up=row.querySelector("[data-up]"),dn=row.querySelector("[data-dn]");if(up){const k=up.dataset.up;up.onclick=()=>setNights(k,nightsOf(k,i)+1,i);if(dn)dn.onclick=()=>setNights(k,nightsOf(k,i)-1,i);}
+    const ctl=row.querySelector(".bctl");if(ctl&&!ctl.querySelector("[data-bbr]")){const b=document.createElement("button");b.className="mini";b.dataset.bbr=i;b.textContent="⑂";
+      b.title="Branch: plan an alternative next stop from here";b.onclick=()=>{const j=brBranch(i);if(j==null)return;const q=document.getElementById("pkq");if(q){q.focus();}};ctl.insertBefore(b,ctl.querySelector("[data-brm]"));}
+    if(forks[i+1]){row.insertAdjacentHTML("afterend",brForkHTML(i+1,forks[i+1]));brWire(row.nextElementSibling);}});
+  if(forks[0]){const ch=el.querySelector(".bchain");if(ch){ch.insertAdjacentHTML("afterbegin",brForkHTML(0,forks[0]));brWire(ch.firstElementChild);}}
+  if(BR&&BR.a!==0){const pick=document.querySelector("#bldPick .pkbar .eyebrow");if(pick)pick.textContent=`adding to Plan ${PLL[BR.a]} — after ${CITIES[state.custom[state.custom.length-1]].name}`;}};}
+if(typeof drawBuilderMap==="function"){const _dbm47=drawBuilderMap;drawBuilderMap=function(){_dbm47.apply(this,arguments);try{if(BLAYER&&BMAP)brDrawAlts(BLAYER,j=>brSwitch(j));}catch(e){}};}
+if(typeof renderCustom==="function"){const _rc47=renderCustom;renderCustom=function(){brSync();return _rc47.apply(this,arguments);};}
+
+// ---------- saved trips, links and loading carry the plans ----------
+if(typeof tripFromBuild==="function"){const _tfb47=tripFromBuild;tripFromBuild=function(){const tp=_tfb47.apply(this,arguments);try{brSync();if(tp&&BR&&BR.v.length>1){tp.plans=JSON.parse(JSON.stringify(BR));}}catch(e){}return tp;};}
+document.addEventListener("click",e=>{const b=e.target.closest('.mtrip [data-o="edit"]');if(!b)return;const tp=TRIPS.find(t=>t.id===b.closest(".mtrip").dataset.tp);if(tp)window.__brLoad=tp.plans||null;},true);
+if(typeof loadTripToBuild==="function"){const _ltb47=loadTripToBuild;loadTripToBuild=function(id){const tp=TRIPS.find(t=>t.id===id);window.__brLoad=tp&&tp.plans||null;return _ltb47.apply(this,arguments);};}
+if(typeof packFromBuild==="function"){const _pfb47=packFromBuild;packFromBuild=function(){const p=_pfb47.apply(this,arguments);try{brSync();if(p&&BR&&BR.v.length>1)p.b={v:BR.v.map(v=>[v.p,v.at,v.t,v.n]),a:BR.a};}catch(e){}return p;};}
+if(typeof packFromTrip==="function"){const _pft47=packFromTrip;packFromTrip=function(tp){const p=_pft47.apply(this,arguments);if(p&&tp&&tp.plans&&tp.plans.v.length>1)p.b={v:tp.plans.v.map(v=>[v.p,v.at,v.t,v.n]),a:tp.plans.a};return p;};}
+function brFromPack(b){try{if(!b||!Array.isArray(b.v)||b.v.length<2)return null;const v=b.v.map(x=>({p:x[0]==null?null:+x[0],at:+x[1]||0,t:(x[2]||[]).filter(k=>CITIES[k]),n:(x[3]||[]).map(n=>Math.max(0,Math.min(21,+n||0)))}));
+  if(v[0].p!==null)return null;return {v,a:Math.min(+b.a||0,v.length-1)};}catch(e){return null;}}
+if(typeof unpack==="function"){const _up47=unpack;unpack=function(h){const p=_up47.apply(this,arguments);try{if(p){const raw=JSON.parse(b64d(h));p.plans=brFromPack(raw.b);}}catch(e){}return p;};}
+if(typeof tripFromPack==="function"){const _tfp47=tripFromPack;tripFromPack=function(p){const tp=_tfp47.apply(this,arguments);if(tp&&p&&p.plans)tp.plans=p.plans;return tp;};}
+if(typeof loadPackToBuild==="function"){const _lpb47=loadPackToBuild;loadPackToBuild=function(p){window.__brLoad=p&&p.plans||null;return _lpb47.apply(this,arguments);};}
+// trip cards mention their plans
+if(typeof mRenderTrips==="function"){const _mrt47=mRenderTrips;mRenderTrips=function(){_mrt47.apply(this,arguments);const v=$m("mvTrips");if(!v)return;
+  v.querySelectorAll(".mtrip[data-tp]").forEach(c=>{const tp=TRIPS.find(t=>t.id===c.dataset.tp);if(tp&&tp.plans&&tp.plans.v.length>1&&!c.querySelector(".plcount")){const m=c.querySelector(".meta");if(m)m.insertAdjacentHTML("beforeend",`<br><span class="plcount">⑂ ${tp.plans.v.length} plans — ${tp.plans.v.map((_,j)=>PLL[j]).join(" / ")}</span>`);}});};}
+try{brSync();}catch(e){console.warn(e);}
+console.log("plans (branching trips) ready");
 </script>
 
 </body></html>

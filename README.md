@@ -45,3 +45,13 @@ On the phone you can also:
 - **About 245 multi-stop routes**, including 11 road trips from Chicago such as Route 66, the Lake Michigan and Lake Superior circles, and the Blues Highway.
 - **About 520 landmarks** worldwide.
 - **Chicago as a place.** You can add it as a stop to start and end road trips, and it has its own page.
+
+## Plans: branching trips
+
+Any stop in a trip can branch into alternatives. Tap **⑂ branch** on a stop (on desktop, the ⑂ button) and add a different next leg. That becomes Plan B, C and so on.
+- Stops shared with other plans keep plain numbers, and a plan's own stops carry its letter (4b, 5b).
+- Other plans show as dashed lines on the map; tap one to switch to it.
+- Change a shared stop, such as its nights, and every plan updates.
+- **Compare plans** shows days, miles, budget and best months side by side.
+- **Make main** promotes a plan, and **Drop** removes it.
+- Saved trips and shared links keep all their plans.
