@@ -12937,7 +12937,7 @@ if(!window.__BOOT&&!MOB){try{fgSetup();densSetup();decorateCards();fgSummary();}
   const FIXED={};
   function alts(t){const out=[];
     D.forEach(d=>{const pt=(typeof phTitle==="function"?phTitle(d):d.name);if(pt!==t&&d.name!==t)return;
-      if(typeof sitesNear==="function")sitesNear(d.ll,45).slice(0,3).forEach(o=>out.push(o.s.wiki||o.s.name));(d.near||[]).slice(0,3).forEach(n=>out.push(n[0]));});
+      (d.near||[]).slice(0,3).forEach(n=>out.push(n[0]));if(typeof sitesNear==="function")sitesNear(d.ll,45).slice(0,3).forEach(o=>out.push(o.s.wiki||o.s.name));});
     SITES.forEach(s=>{if((s.wiki||s.name)===t&&s.where)out.push(s.where);});
     ALL.forEach(x=>{if(x.kind==="string"&&x.stops&&x.stops[0][0]===t)x.stops.slice(1,3).forEach(s=>out.push(s[0]));});
     return [...new Set(out)].filter(a=>a&&a!==t);}
